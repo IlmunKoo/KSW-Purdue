@@ -26,16 +26,16 @@ All details of this project are explained on matrials listed below.
 - Presenation
 
 ## Problem Statement
-UAV (Unmanned Aerial Vehicle) can be abused by bad actors for malicious purposes. One example is a kamikaze attack where a UAV crashed into one of the electrical grid in Pennsylvania in July 2020. There are many research that published how to detect malicous UAV using cameras, radars, and lidars. However, There is little research that predict UAV velocity. Using the previously mentioned equipment will be expensive. Therefore, a microphone will be used to collect the dataset. Then, that dataset will be used to predict if a UAV exceeds our given velocity boundary.
+UAV (Unmanned Aerial Vehicle) can be abused by bad actors for malicious purposes. One example is a kamikaze attack where a UAV crashed into one of the electrical grid in Pennsylvania in July 2020. There are many research that published how to detect malicious UAV using cameras, radars, and lidars. However, There is little research that predict UAV velocity. Using the previously mentioned equipment will be expensive. Therefore, a microphone will be used to collect the dataset. Then, that dataset will be used to predict if a UAV exceeds our given velocity boundary.
 
 ## Novelty
-1. There is very little research about predicting UAV velocity. 
+1. There is little research about predicting UAV velocity. 
     - There is many research that detects UAV using many kind of equipment. However, There is little research on detecting UAV velocity over regulation. This research is inspired by [1] that predicts any car acceleration or deceleration.
 2. Acoustic data costs less and easier to get data.
     - There are many research that uses a camera, radar, lidar, or microphones to detect a UAV. This research focuses on using one microphone to collect our data, as using a microphone is cheaper than the previously mentioned equipment and is easier to collect data with it.
 
 ## System Overview
-![overview img](./img/ppt_readme_image.png)
+![overview img](./img/ppt_readme_image0524.png)
 1. Microphone records UAV sounds, and a speed gun is used to detect the speed of the UAV (due to limitation, the speedgun used cannot detect anything under 10 mph).
 2. Recorded sound is arranged by a label that slow(0-9 mph) or fast(10~ mph).
 3. The data extract feature uses various methods.
@@ -62,10 +62,7 @@ pip install pandas
 pip install sounddevice
 pip install wavio
 ```
-if your enviorment is conda,
-```
-conda install ...
-```
+
 
 ## Project Period
 April. 19, 2022 - August. 3, 2022
@@ -75,14 +72,14 @@ April. 19, 2022 - August. 3, 2022
     - Kangwon National University
     - Computer Engineering
     - e_yeong@naver.com
-- Jeongyoun Seo
-    - Sangmyung University
-    - Human Intelligence Information Engineering
-    - sjo5525@naver.com
 - Yeongmin Seo
     - DaeguCatholic University
     - Cyber Security
     - 1003pr@gmail.com
+- Jeongyoun Seo
+    - Sangmyung University
+    - Human Intelligence Information Engineering
+    - sjo5525@naver.com
 - Raymond Zeng
     - Purdue University
     - Cyber Security
