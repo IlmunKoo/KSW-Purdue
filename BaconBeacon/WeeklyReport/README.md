@@ -74,7 +74,6 @@
 
 - iOS Device (iPhone 12)
   - iOS 14.5 installed
-  - 
 
 - Android Device (Galaxy A31)
   - Android Studio
