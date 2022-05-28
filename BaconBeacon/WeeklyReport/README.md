@@ -13,7 +13,8 @@
     
     There are many people injured due to the fire. However, current evacuation system is not good enough to evacuate many people due to the smoke.
 
-    There were several attempts to try to fix this issue, However, they are not good enough. Wi-Fi based localization and Pedestrian Dead Reckoning has its limits on accuracy, and 2-dimentional Navigation is not good enough to make people evacuate efficiently.
+    There were several attempts to try to fix this issue, However, they are not good enough. Wi-Fi based localization and 
+    Pedestrian Dead Reckoning has its limits on accuracy, and 2-dimentional Navigation is not good enough to make people evacuate efficiently.
 
 
 📖 *Considerations*
@@ -32,6 +33,7 @@
        => Most previous research works on Evacuation Algorithm based on database. It means that they cannot modify the evacuation route based on real-time data.
       Our team concentrates on real-time route modification to make sure that victims can stay away from hazards
       Our project also detects location of fire, so people may know the location of fire.
+      
     3. Augmented Reality
       Since we developed optimized route algorithm to calculate the best route, if we cannot give advice to victims clearly, it would be useless.
       Previous work used 2D navigation and image-based navigation. for 2D navigation, It has its limits on being too dependent on angles, that users cannot notice if they are on the right route.
