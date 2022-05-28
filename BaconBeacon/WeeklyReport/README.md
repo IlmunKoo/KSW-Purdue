@@ -11,10 +11,12 @@
 
 🧖🏻‍♀️ *Problem Statement*
     
-    There are many people injured due to the fire. However, current evacuation system is not good enough to evacuate many people due to the smoke.
+    There are many people injured due to the fire. However, current evacuation system is not good enough to evacuate 
+    many people due to the smoke.
 
     There were several attempts to try to fix this issue, However, they are not good enough. Wi-Fi based localization and 
-    Pedestrian Dead Reckoning has its limits on accuracy, and 2-dimentional Navigation is not good enough to make people evacuate efficiently.
+    Pedestrian Dead Reckoning has its limits on accuracy, and 2-dimentional Navigation is not good enough to make people 
+    evacuate efficiently.
 
 
 📖 *Considerations*
@@ -26,19 +28,24 @@
 💡 *Novelty*
 
     1. High accuracy of indoor localization using iBeacon
-       => We researched about Wi-Fi based indoor localization, and we figured out that it is not accurate enough due to lack of Access Point.
+       => We researched about Wi-Fi based indoor localization, and we figured out that it is not accurate enough due 
+       to lack of Access Point.
       We include beacon and Access Point when we localize, and we will gain 22% increase in accuracy.
       
     2. Real-Time socket communication and Optimized Route Algorithm
-       => Most previous research works on Evacuation Algorithm based on database. It means that they cannot modify the evacuation route based on real-time data.
+       => Most previous research works on Evacuation Algorithm based on database. It means that they cannot modify 
+       the evacuation route based on real-time data.
       Our team concentrates on real-time route modification to make sure that victims can stay away from hazards
       Our project also detects location of fire, so people may know the location of fire.
       
     3. Augmented Reality
-      Since we developed optimized route algorithm to calculate the best route, if we cannot give advice to victims clearly, it would be useless.
-      Previous work used 2D navigation and image-based navigation. for 2D navigation, It has its limits on being too dependent on angles, that users cannot notice if they are on the right route.
+      Since we developed optimized route algorithm to calculate the best route, if we cannot give advice to victims 
+      clearly, it would be useless.
+      Previous work used 2D navigation and image-based navigation. for 2D navigation, It has its limits on being too 
+      dependent on angles, that users cannot notice if they are on the right route.
       Image based navigation, has its limits on malfunctioning at real situation full of smoke.
-      We developed Augmented Reality for those who cannot notice exit sign. It is clear to see, and it works when they does not have clear sight.
+      We developed Augmented Reality for those who cannot notice exit sign. It is clear to see, and it works when 
+      they does not have clear sight.
 
 🏛 *System Overview*
  <p align="center">
@@ -46,7 +53,7 @@
 </p>
     
     1. Raspberry Pi always tries to detect fire, and server always checks if Raspberry Pi works or not. Once 
-    Raspberry detects fire, It sends to server HTTP request to let the server know the situation of fire.
+    Raspberry Pi detects fire, It sends to server HTTP request to let the server know the situation of fire.
     
     2. Server gets blueprint of building from Database, and sends the beacon status if it works well.
     
