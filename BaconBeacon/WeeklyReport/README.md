@@ -12,7 +12,7 @@
 
 ### 2. Project Period
 
-    04-12-2022(SUN) ~ 08-05-2022(MON)
+    04-17-2022(SUN) ~ 08-04-2022(THU)
 
 
 ### 3. Project Title 
