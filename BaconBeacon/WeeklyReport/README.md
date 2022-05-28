@@ -45,7 +45,8 @@
    <img src="https://github.com/BeaconAR/BEST/raw/main/image/Overview.png" alt="Image Error"/>
 </p>
     
-    1. Raspberry Pi always tries to detect fire, and server always checks if Raspberry Pi works or not. Once Raspberry detects fire, It sends to server HTTP request to let the server know the situation of fire.
+    1. Raspberry Pi always tries to detect fire, and server always checks if Raspberry Pi works or not. Once 
+    Raspberry detects fire, It sends to server HTTP request to let the server know the situation of fire.
     
     2. Server gets blueprint of building from Database, and sends the beacon status if it works well.
     
@@ -53,9 +54,11 @@
     
     4. If smartphone opens the application, it start collecting Beacon's RSSI, UUID, major and minor value.
     
-    5. Smartphone start calculating current location from the data collected via machine learning, and sends server location data
+    5. Smartphone start calculating current location from the data collected via machine learning, and sends 
+    server location data
     
-    6. Server calculates the fastest way to escape, and sends back to smartphone. At this part, A* or Dijkstra Algorithm will be used
+    6. Server calculates the fastest way to escape, and sends back to smartphone. At this part, A* or 
+    Dijkstra Algorithm will be used
  
 🖥️ *Environment Setting*
 
