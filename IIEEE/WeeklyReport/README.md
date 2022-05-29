@@ -38,11 +38,7 @@ A Comparison Distributed Systems before and after using Kubernetes for Smart Far
 
 🏛 **System Overview**
 
-<p align="center">
-
-<img src="https://user-images.githubusercontent.com/74306759/144271084-069a0741-ccf7-49ea-bb41-d434c3f91bc3.png" alt="Image Error"/>
-
-</p>
+![new-system-architecture](https://user-images.githubusercontent.com/77658361/170851189-5a318b33-27a4-4b6d-9b25-6699d9230cad.png)
 
 1. The farm data is transmitted to the gateway through LoRa communication.
 
