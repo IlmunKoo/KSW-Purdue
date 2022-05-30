@@ -47,12 +47,13 @@ can be obtained by a single collection trip.
 ![E991DBE4-A0EF-4476-B506-A7AD529EE07C](https://user-images.githubusercontent.com/59404684/170925990-90c5886a-f8fd-45df-bde8-96068d8cad4e.png)  
 
 ```markdown!
-
 🏄 Hardware
+
 DJI Phantom 4 Pro with two payloads  
 MacBook Pro 16(2019) as a microphone. 
 
 ⛷️ Software
+
 - Feature Extraction
  1. MFCC
  2. Mel
@@ -64,7 +65,6 @@ MacBook Pro 16(2019) as a microphone.
  1. Time Stretching(Raw Data)
  2. Time Masking(Spectrogram)
  3. Frequency Masking(Spectrogram)
-
 ```
 
 
