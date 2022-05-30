@@ -36,9 +36,6 @@ employing laptops or cell phones as recording devices instead is a more cost-eff
 
 
 
-[1] Wang, Y., Fagian, F. E., Ho, K. E., & Matson, E. T. (2021, November). A Feature Engineering Focused System for Acoustic UAV Detection. In 2021 Fifth IEEE International Conference on Robotic Computing (IRC) (pp. 125-130). IEEE.
-that can be applied by anyone.  
-
 2. Currently only 600 audio samples were secured for UAV payload classification. Since the dataset is not enough  
 for applying deep learning algorithms in the prior study, data augmentation will also be exercised in order to obtain  
 a sufficient amount of data. At least 1000 data samples are required for deep learning algorithms and normally 360 audio samples. 
