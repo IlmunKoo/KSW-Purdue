@@ -50,6 +50,7 @@ can be obtained by a single collection trip.
 
 
 :classical_building: System Overview  
+
 ![E991DBE4-A0EF-4476-B506-A7AD529EE07C](https://user-images.githubusercontent.com/59404684/170925990-90c5886a-f8fd-45df-bde8-96068d8cad4e.png)  
 
 ```markdown!
