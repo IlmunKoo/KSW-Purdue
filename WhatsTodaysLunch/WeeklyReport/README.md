@@ -51,10 +51,10 @@ can be obtained by a single collection trip.
 
 :desktop_computer: Environment Setting
 ```markdown
-:heavy_check_mark: Pytorch 1.11.0   
-:heavy_check_mark: Python 3.10.x  
-:heavy_check_mark: MacBook Pro 16
-
+✔️ Pytorch 1.11.0   
+✔️ Python 3.10.x  
+✔️ MacBook Pro 16
+✔️ DJI Phantom pro 4
 
 ```
 
