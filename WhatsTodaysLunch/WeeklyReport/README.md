@@ -44,6 +44,8 @@ for applying deep learning algorithms in the prior study, data augmentation will
 a sufficient amount of data. At least 1000 data samples are required for deep learning algorithms and normally 360 audio samples. 
 can be obtained by a single collection trip. 
 
+
+[1] Wang, Y., Fagian, F. E., Ho, K. E., & Matson, E. T. (2021, November). A Feature Engineering Focused System for Acoustic UAV Detection. In 2021 Fifth IEEE International Conference on Robotic Computing (IRC) (pp. 125-130). IEEE.
 ```
 
 
@@ -88,7 +90,7 @@ $ cd WhatsTodaysLunch
 ```
 
 
-family_man_woman_girl_boy: Collaborator
+:family_man_woman_girl_boy: Collaborator
 ```markdown
 👮‍♂️ Ilmun Ku
 - Hankuk University of Foreign Studies
@@ -117,5 +119,7 @@ family_man_woman_girl_boy: Collaborator
 
 
 ```
+
+
 
 
