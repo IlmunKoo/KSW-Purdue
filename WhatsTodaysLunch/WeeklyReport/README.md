@@ -67,34 +67,30 @@ $ cd WhatsTodaysLunch
 
 family_man_woman_girl_boy: Collaborator
 ```markdown
-:policeman: Ilmun Ku
+👮‍♂️ Ilmun Ku
 - Hankuk University of Foreign Studies
 - Major in Artificial Intelligence Convergence
 - mun90505@hufs.ac.kr
 - https://github.com/ilmunkoo
 
-
-:female_detective: Seungyeon Roh
+🕵️‍♀️ Seungyeon Roh
 - Konkuk University
 - Major in Computer Science and Engineering
 - shtmddus99@konkuk.ac.kr
 - https://github.com/seungyeonroh
 
-:ninja: Gyeongyeong Kim
+🥷 Gyeongyeong Kim
 - Sunmoon University
 - Major in Computer Science and Engineering
 - kky57389@sunmoon.ac.kr
 - https://github.com/gyeongyeongkim
 
 
-:guardsman: Charlse Taylor
+💂‍♂️ Charlse Taylor
 - Purdue Univerisity
 - Major in Computer and Information Technology
 - taylo869@purdue.edu
 - https://github.com/charlestaylor
-
-
-
 
 
 ```
