@@ -3,18 +3,18 @@ by What is Today's Lunch?
 =================================================================
 
 
-:clipboard:Project title
+:clipboard: Project title
 ```markdown
 UAV payload detection using deep learning algorithms. 
 ```
 
 
-:calendar:Project Period
+:calendar: Project Period
 ```markdown
 04-17-2022(SUN) ~ 08-05-2022(FRI)  
 ```
 
-:pushpin:Problem Statement
+:pushpin: Problem Statement
 ```markdown
 Over the years, as Unmanned Aerial Vehicle technology has continued to advance,  
 it has become much easier and cheaper to access UAVs. It is certain that UAVs are  
@@ -27,16 +27,16 @@ correctly dectect UAVs with payloads in order to reduce expected harm to the vic
 ```
 
 
-:classical_building:Novelty
+:classical_building: Novelty
 ```markdown
-1. Conducting data collection utilizing laptop
+1.Conducting data collection utilizing laptop
 In the prior study [1], data collection was conducted by utilizinng several Raspberry Pis as microphones.  
 However, Uosing Raspberry Pis was not as practical as of a method of a method as we'd like,  
 due to the time and effort expended setting up every piece of equipment. However,  
 employing laptops or cell phones as recording devices instead is a more cost-effective and easily accessible method. 
 that can be applied by anyone.  
 
-1. Currently only 600 audio samples were secured for UAV payload classification. Since the dataset is not enough  
+1.Currently only 600 audio samples were secured for UAV payload classification. Since the dataset is not enough  
 for applying deep learning algorithms in the prior study, data augmentation will also be exercised in order to obtain  
 a sufficient amount of data. At least 1000 data samples are required for deep learning algorithms and normally 360 audio samples. 
 can be obtained by a single collection trip. 
