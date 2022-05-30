@@ -26,7 +26,7 @@ correctly dectect UAVs with payloads in order to reduce expected harm to the vic
 ```
 
 
-:classical_building: Novelty
+:desert_island: Novelty
 ```markdown
 1. Conducting data collection utilizing laptop
 In the prior study [1], data collection was conducted by utilizinng several Raspberry Pis as microphones.  
@@ -41,3 +41,19 @@ a sufficient amount of data. At least 1000 data samples are required for deep le
 can be obtained by a single collection trip. 
 
 ```
+
+
+:classical_building: System Overview
+```markdown
+
+```
+
+
+:desktop_computer: Environment Setting
+```markdown
+:heavy_check_mark: Pytorch 1.11.0   
+:heavy_check_mark: Python 3.10.x  
+```
+
+
+
