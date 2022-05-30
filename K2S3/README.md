@@ -47,7 +47,8 @@
 	 
 🏛 *System Overview*
 
-    ![image](https://user-images.githubusercontent.com/33504843/170927729-a3bfd4de-40e5-49fd-85a2-631ee9921a8e.png)
+
+![image](https://user-images.githubusercontent.com/33504843/170927729-a3bfd4de-40e5-49fd-85a2-631ee9921a8e.png)
 
     1. The visual and acoustic data are collected via camera and microphone.
     
