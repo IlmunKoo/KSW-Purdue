@@ -33,6 +33,10 @@ In the prior study [1], data collection was conducted by utilizinng several Rasp
 However, Uosing Raspberry Pis was not as practical as of a method of a method as we'd like,  
 due to the time and effort expended setting up every piece of equipment. However,  
 employing laptops or cell phones as recording devices instead is a more cost-effective and easily accessible method. 
+
+
+
+[1] Wang, Y., Fagian, F. E., Ho, K. E., & Matson, E. T. (2021, November). A Feature Engineering Focused System for Acoustic UAV Detection. In 2021 Fifth IEEE International Conference on Robotic Computing (IRC) (pp. 125-130). IEEE.
 that can be applied by anyone.  
 
 2. Currently only 600 audio samples were secured for UAV payload classification. Since the dataset is not enough  
