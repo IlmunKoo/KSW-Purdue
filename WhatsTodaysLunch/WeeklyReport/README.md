@@ -16,11 +16,10 @@ UAV payload detection using deep learning algorithms.
 
 :pushpin: Problem Statement
 ```markdown
-Over the years, as Unmanned Aerial Vehicle technology has continued to advance,  
-it has become much easier and cheaper to access UAVs. It is certain that UAVs are  
-providing comfort to our lives. However, while UAV accessibility has grown, malicious  
-activities have also been increasingly common. Especially, UAVs with payloads can easily be  
-employed to endanger innocent civillians or government dignitaries with their airborne contents.  
+Over the years, as Unmanned Aerial Vehicle technology has continued to advance,  it has become much easier and cheaper to access UAVs.  
+It is certain that UAVs are providing comfort to our lives. However, while UAV accessibility has grown, malicious activities have also been  
+increasingly common. Especially, UAVs with payloads can easily be employed to endanger innocent civillians or government dignitaries  
+with their airborne contents.  
 For example, UAVs with payloads could throw harmful materials or explosives into the public airspace.  
 Also, some accidents concerning UAVs with payloads occured frequently. In this situation, it is required to  
 correctly dectect UAVs with payloads in order to reduce expected harm to the victims. 
