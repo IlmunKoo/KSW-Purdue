@@ -4,6 +4,6 @@ by What is Today's Lunch?
 
 
 :clipboard:Project title
-```python
+```markdown
 UAV payload detection using deep learning algorithms
 ```
