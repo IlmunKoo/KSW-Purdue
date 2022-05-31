@@ -11,60 +11,60 @@
 
 🧖🏻‍♀️ *Problem Statement*
 
-    As self-driving cars are commercialized, a lot of data is accumulated, and   accordingly, technology is rapidly developing. By the way, this shows robust   performance in on-road environments with data on routes, however, it show poor   performance in off-road such as mountains, farms, and deserts. Because it is difficult to recognize the surrounding environment in an environment that you have never been to before, and there are too many unpredictable places.
+    As self-driving cars are commercialized, a lot of data is accumulated, and accordingly, technology is rapidly developing. By the way, this shows robust performance in on-road environments with data on routes, however, it shows poor performance in off-road such as mountains, farms, and deserts. Because it is difficult to recognize the surrounding environment in an environment that you have never been to before, and there are too many unpredictable places.
 
-    In unkown environment, autonomous vehicle must recognize its environment and determine its location through SLAM(Simultaneous Localization and Mapping). In on-road environment, it has sufficient information about the road, so SLAM is not required, and it is easily operated in a relatively easy surrounding environment indoors. However, there are still many problems to be solved in order to show perfect performance on off-road.
+    In an unknown environment, an autonomous vehicle must recognize its environment and determine its location through SLAM(Simultaneous Localization and Mapping). In the on-road environment, it has sufficient information about the road, so SLAM is not required, and it is easily operated in a relatively easy surrounding environment indoors. However, there are still many problems to be solved to show perfect performance on off-road.
 
-    In addition, on the road, the optimal route is selected based on time, fuel efficiency, and distance, but on off-road, there are various roads such as uneven roads, dry soil, and unstable roads such as mud slopes. Therefore, even if more time is spent on off-road, it is judged that a special path planning method using additional information is more appropriate to select a stable path.
+    In addition, on the road, the optimal route is selected based on time, fuel efficiency, and distance, but off-road, there are various roads such as uneven roads, dry soil, and unstable roads such as mud slopes. Therefore, even if more time is spent on off-road, it is judged that a special path planning method using additional information is more appropriate to select a stable path.
 
     In conclusion, it is required that special SLAM and path planning methods are optimized off-road.
 
 📖 *Considerations*
 
     🚜Software
-      - Manage processes that allow multiple processes to operate simultaneously and in real tiem.
+      - Manage processes that allow multiple processes to operate simultaneously and in real time.
       - Stable error handling in case of malfunction for safety.
     
     🚜Hardware
       - Robust frame for driving in rugged terrain.
-      - Independent vehicles platfrom without network connectivity.
+      - Independent vehicles platform without network connectivity.
       - Heat dissipation to withstand high temperatures and direct rays of the sun.
 
 💡 *Novelty*
 
     1. Develop RGB-D SLAM using RGB-D Camera with GPS.
-       => The existing SLAM method on a Camera or LiDAR basis. However, we use RGB-D cameras and GPS data together to achieve robust performance in off-road environments. 
+       => The existing SLAM method is on a Camera or LiDAR basis. However, we use RGB-D cameras and GPS data together to achieve robust performance in off-road environments. 
       
-    2. Develop Path planning considering path condition to improve drving quality.
-       => Existing path planning metods are estimated based on the shortest path. However, the vehicle can search stable path using additional information on the characteristics of the road. The additional information includes the priority for certain paths, considering geographical features such as slope, trunk, and rocks. A stable path can be marked using GPS coordinates and given more weights. As a result, the vehicle can select more stable path stochastically. 
+    2. Develop Path planning considering path conditions to improve driving quality.
+       => Existing path planning methods are estimated based on the shortest path. However, the vehicle can search stable paths using additional information on the characteristics of the road. The additional information includes the priority for certain paths, considering geographical features such as slope, trunk, and rocks. A stable path can be marked using GPS coordinates and given more weight. As a result, the vehicle can select more stable paths stochastically. 
 
 🏛 *System Overview*
  <p align="center">
 <img width="424" alt="image" src="https://user-images.githubusercontent.com/53038354/170869198-8e1b3fe9-45b0-4cf2-b9ed-6c7433c0f1f3.png">
 </p>
     
-    This is an overview of system architecture. It consists of hardware, middleware, and software, and collects data through RGB-D camera, gps and IMU.
+    This is an overview of system architecture. It consists of hardware, middleware, and software, and collects data through RGB-D camera, GPS and IMU.
 
 <p align="center">
 <img width="608" alt="image" src="https://user-images.githubusercontent.com/53038354/170869449-d4f0c003-6d6f-40da-b7f7-e889dc32b6ba.png">
 </p>
     
     🚜Hardware    
-       As shown in the left figure, the John deere’s electrical toy vehicle is remodeled. Two DC motors for progress, one servo motor for steering, wheels, and electrical system were maintained. Then, gearbox and additional frame were added for making stronger power. We made the frames by a 3D printer. These all gears are controlled by an electronic circuit. The figure on the right shows an electronic circuit.
+       As shown in the left figure, the Johndeere’s electrical toy vehicle is remodeled. Two DC motors for progress, one servo motor for steering, wheels, and electrical system were maintained. Then, gearbox and additional frame were added for making stronger power. We made the frames by a 3D printer. These all gears are controlled by an electronic circuit. The figure on the right shows an electronic circuit.
 
     🚜Software  
 
        - RGB-D SLAM  
-         It consist of three steps, camera tracking, local mapping and loop closing. GPS data was additionally used for existing RGB-D SLAM.
+         It consists of three steps, camera tracking, local mapping and loop closing. GPS data was additionally used for existing RGB-D SLAM.
 
-          1. Camera tracking: The new keyframe will be chosen with map points and GPS data. Each new frame is decided as keyframe only if they have similar map points compared with previous keyframes. In this process, GPS would make it possible to select keyframe only when the vehicle moves certain distance.   
+          1. Camera tracking: The new keyframe will be chosen with map points and GPS data. Each new frame is decided as a keyframe only if they have similar map points compared with previous keyframes. In this process, GPS would make it possible to select the keyframe only when the vehicle moves certain distance.   
             
           2. Local mapping: The new keyframe will be inserted using graph and GPS. The local map is made of graph, and each keyframe is connected with the nearest keyframe as a node. GPS data will be used to find the nearest keyframe with a new keyframe.  
 
           3. Loop closing: The feature is extracted in each frame using DBoW(bag of words based loop detector) and GPS. In off-road, it might be hard to extract the specific feature for each frame. For this reason we use the GPS for finding loop.  
 
        - Path Planning  
-          A sampling-based path planning method is used. Since it start path planning from the sampled location, it is added the priority for certain paths, considering geographical features such as slope, trunk, and rocks. A stable path can be marked using GPS coordinates and given more weights. As a result, the vehicle can select more stable path stochastically.   
+          A sampling-based path planning method is used. Since it starts path planning from the sampled location, it is added the priority for certain paths, considering geographical features such as slope, trunk, and rocks. A stable path can be marked using GPS coordinates and given more weight. As a result, the vehicle can select more stable paths stochastically.   
 
 🖥️ *Environment Setting*
 
