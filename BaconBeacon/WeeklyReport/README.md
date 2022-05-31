@@ -11,11 +11,18 @@
 
 🧖🏻‍♀️ *Problem Statement*
     
-    Due to the limitation of current evacuation plan using EXIT sign, people feels hard to escape during actual situation of fire.
+    In United States there are 1009 fires every day and 42 residential fires every hour[1].
+
+    Due to the limitation of current evacuation plan using EXIT sign, evacuees will have a difficult time evacuating if the buildings are complex and individuals       
+    struggle to understand the building’s design.
 
     There were several attempts to try to fix this issue, However, they are not good enough. Wi-Fi based localization and 
     Pedestrian Dead Reckoning has its limits on the accuracy, and 2-dimensional Navigation is not good enough to make people 
     evacuate efficiently.
+
+    Therefore, a system that can both provide high accuracy localization and efficiently way to evacuating people is needed.
+
+    [1] U.S. Fire Administration, FEMA[2021 online]. Available: Fire Estimate Summary
 
 
 📖 *Considerations*
@@ -65,6 +72,20 @@
     
     6. Server calculates the fastest way to escape and sends it back to the smartphone. At this part, A* or 
     Dijkstra Algorithm will be used
+    
+ <p align="center">
+   <img src="https://github.com/BeaconAR/BEST/raw/main/image/topology.png" alt="Image Error"/>
+</p>
+    
+    Localize each user’s position : When raspberry pi detects fire with sensor, it send HTTP request to our server. As ther server with connected with a user’s
+    smartphone with TCP connection, it makes the smartphone to receive beacon’s signal. After receiving the signal, it calculates RSSI values and localize the user’s 
+    position by using triangulation.
+
+    Optimal Evacuation Algorithm : The smartphone sends the calculated position to the server through TCP connection. The position can be synchronized in real-time 
+    due to TCP connection. The server configures an optimal evacuation route with the received position and our algorithm. If any change occurs, server will find a 
+    new evacuation route and notify it to the smartphone.
+
+
  
 🖥️ *Environment Setting*
 
