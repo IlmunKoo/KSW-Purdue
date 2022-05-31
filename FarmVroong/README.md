@@ -13,8 +13,8 @@
 
     As self-driving cars are commercialized, a lot of data is accumulated, and accordingly, technology is rapidly developing. This shows the robust performance of autonomous vehicles in on-road environments, however, it shows low performance in off-road environments. This is because it is hard to build datasets because off-road environments have unstructured class boundaries, uneven terrain, strong textures, and irregular characteristics. Moreover, data cannot be shared between different types of environments, such as deserts, forests, and farms. Therefore, it is difficult to recognize the surrounding environments that you have never been to.
 
-    In an unknown environment, an autonomous vehicle must recognize its environment and determine its location through SLAM(Simultaneous Localization and Mapping). It is easily operated in a relatively easy surrounding environment indoors. However, there are still many problems to be solved to show perfect performance on off-road.
-
+    In an unknown environment, an autonomous vehicle must know the map of its environment and determine its location through SLAM(Simultaneous Localization and Mapping). SLAM does not operate normally because it is difficult to recognize the surroundings on off-road. Therefore, the environment should be accurately recognized and appropriate keyframes be extracted using the data collected by the sensor. 
+    
     In addition, on the road, the optimal route is selected based on time, fuel efficiency, and distance, but off-road, there are various roads such as uneven roads, dry soil, and unstable roads such as mud slopes. Therefore, even if more time is spent on off-road, it is judged that a special path planning method using additional information is more appropriate to select a stable path.
 
     In conclusion, it is required that special SLAM and path planning methods are optimized off-road.
