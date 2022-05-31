@@ -11,7 +11,7 @@
 
 🧖🏻‍♀️ *Problem Statement*
 
-    As self-driving cars are commercialized, a lot of data is accumulated, and accordingly, technology is rapidly developing. By the way, this shows robust performance in on-road environments with data on routes, however, it shows poor performance in off-road such as mountains, farms, and deserts. Because it is difficult to recognize the surrounding environment in an environment that you have never been to before, and there are too many unpredictable places.
+    As self-driving cars are commercialized, a lot of data is accumulated, and accordingly, technology is rapidly developing. This shows robust performance in on-road environments with data on routes, however, it shows poor performance in off-road such as mountains, farms, and deserts. Because it is difficult to recognize the surrounding environment in an environment that you have never been to before, and there are too many unpredictable places.
 
     In an unknown environment, an autonomous vehicle must recognize its environment and determine its location through SLAM(Simultaneous Localization and Mapping). In the on-road environment, it has sufficient information about the road, so SLAM is not required, and it is easily operated in a relatively easy surrounding environment indoors. However, there are still many problems to be solved to show perfect performance on off-road.
 
