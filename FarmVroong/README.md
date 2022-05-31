@@ -3,7 +3,8 @@
 
 📑 *Project Title*
         
-    Off-road RGB-D SLAM and Path planning with GPS
+    RGB-D SLAM and Path Planning for Stable Off-road Autonomous Driving
+    using RGB-D camera and GPS
 
 📅 *Project Period*
 
