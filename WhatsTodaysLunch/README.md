@@ -108,7 +108,6 @@ $ cd WhatsTodaysLunch
 - kky57389@sunmoon.ac.kr
 - https://github.com/gyeongyeongkim
 
-
 💂‍♂️ Charlse Taylor
 - Purdue Univerisity
 - Major in Computer and Information Technology
