@@ -53,7 +53,7 @@ can be obtained by a single collection trip.
 DJI Phantom 4 Pro with two payloads  
 MacBook Pro 16(2019) as a microphone. 
 
-⛷️ Software
+🏂 Software
 
 - Feature Extraction
  1. MFCC
