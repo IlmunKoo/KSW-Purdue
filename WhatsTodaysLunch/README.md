@@ -87,7 +87,7 @@ $ cd WhatsTodaysLunch
 
 :family_man_woman_girl_boy: Collaborator
 ```markdown
-👮‍♂️ Ilmun Ku
+🧑‍✈️ Ilmun Ku
 - Hankuk University of Foreign Studies
 - Major in Artificial Intelligence Convergence
 - mun90505@hufs.ac.kr
