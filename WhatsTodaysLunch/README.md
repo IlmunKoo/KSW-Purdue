@@ -64,8 +64,9 @@ MacBook Pro 16(2019) as a microphone.
 
 - Data Augmentation
  1. Time Stretching(Raw Data)
- 2. Time Masking(Spectrogram)
- 3. Frequency Masking(Spectrogram)
+ 2. Pitch Scaling(Raw Data)
+ 3. Time Masking(Spectrogram)
+ 4. Frequency Masking(Spectrogram)
 ```
 
 
