@@ -29,7 +29,7 @@ correctly dectect UAVs with payloads in order to reduce expected harm to the vic
 :desert_island: Novelty
 ```markdown
 1. Conducting data collection utilizing laptop
-In the prior study [1], data collection was conducted by utilizinng several Raspberry Pis as microphones.  
+In the prior study [1], data collection was conducted by utilizing several Raspberry Pis as microphones.  
 However, Uosing Raspberry Pis was not as practical as of a method of a method as we'd like,  
 due to the time and effort expended setting up every piece of equipment. However,  
 employing laptops or cell phones as recording devices instead is a more cost-effective and easily accessible method. 
