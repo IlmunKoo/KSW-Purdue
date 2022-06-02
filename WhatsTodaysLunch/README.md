@@ -104,13 +104,13 @@ $ cd WhatsTodaysLunch
 - Sunmoon University
 - Major in Computer Science and Engineering
 - kky57389@sunmoon.ac.kr
-- https://github.com/gyeongyeongkim
+- https://github.com/kky5738
 
 💂‍♂️ Charlse Taylor
 - Purdue Univerisity
 - Major in Computer and Information Technology
 - taylo869@purdue.edu
-- https://github.com/charlestaylor
+- https://github.com/charlesjtaylor
 
 
 ```
