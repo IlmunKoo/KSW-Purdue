@@ -83,7 +83,7 @@
 
 📤 *Installation*
 
-    $ git clone https://github.com/MINJILEE-PURDUE/KSW_2021_Fall_Program.git
+    $ git clone https://github.com/MINJILEE-PURDUE/KSW_2022_Spring_Program.git
     $ cd FarmVroong
 
 
