@@ -45,7 +45,7 @@ can be obtained by a single collection trip.
 
 :classical_building: System Overview  
 
-![E991DBE4-A0EF-4476-B506-A7AD529EE07C](https://user-images.githubusercontent.com/59404684/170925990-90c5886a-f8fd-45df-bde8-96068d8cad4e.png)  
+![KakaoTalk_Photo_2022-06-02-10-00-25](https://user-images.githubusercontent.com/59404684/171646959-d5b5710d-703a-4257-80fd-f90237e9f64c.png)
 
 ```markdown!
 🏄 Hardware
