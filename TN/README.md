@@ -52,6 +52,7 @@ You can download Python
 - sounddevice 0.4.1
 - wavio 0.0.4
 - sklearn 0.24.2
+- lightgbm 3.3.2
 - pytorch ?
 
 
@@ -61,6 +62,9 @@ pip install numpy
 pip install pandas
 pip install sounddevice
 pip install wavio
+pip install sklearn
+pip install lightgbm
+
 ```
 
 
