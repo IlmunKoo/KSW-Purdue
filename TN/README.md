@@ -88,7 +88,10 @@ April. 19, 2022 - August. 3, 2022
     - Purdue University
     - Cyber Security
     - zeng172@purdue.edu
-
+- Aminata Niang
+    - Institut Polytechnique de Paris
+    - Network and Computer Engineering
+    - aminatabinetabibiniang@gmail.com
 
 ## Refrence
 [1] H. V. Koops and F. Franchetti, "An ensemble technique for estimating vehicle speed and gear position from acoustic data," *2015 IEEE Int. Conf. on Digit. Signal Process. (DSP)*, 2015, pp. 422-426, doi: 10.1109/ICDSP.2015.7251906.
