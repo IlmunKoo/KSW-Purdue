@@ -53,7 +53,7 @@ You can download Python
 - wavio 0.0.4
 - sklearn 0.24.2
 - lightgbm 3.3.2
-- pytorch ?
+- pytorch 1.11
 
 
 ```
