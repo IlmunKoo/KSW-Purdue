@@ -36,8 +36,8 @@
      => According to previous studies, conventional drone detection technologies such as Radar or Lidar are expensive, so compare to the traditional method, cost-effective vision-based detection methods are mainly used.
 	   However, in the case of vision, it is difficult to distinguish between flying objects such as birds and drones.
 	   Hence, drone detection is possible more accurately by using the microphone as an additional detection method to check if the drone approaches.
-    
-	2. Use Multi-modal method with vision and audio
+  
+  2. Use Multi-modal method with vision and audio
      => Most previous research in drone detection field only focused on single domain.
 	   Not only research in the drone detection task, but also studies in position estimation of drone are only interested in single domain.
 	   However, the studies about multi-modality are increased and be one of the hot topic.
