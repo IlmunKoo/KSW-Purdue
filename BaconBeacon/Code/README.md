@@ -1,9 +1,9 @@
-#Code
+# Folder description
 
-Android - Android Application Development
+**Android - Android Application Development**
 
-AR_Evacuation_Beacon - iOS Application Development
+**AR_Evacuation_Beacon - iOS Application Development**
 
-Embedded - Raspberry Pi Development
+**Embedded - Raspberry Pi Development**
 
-Server - Server development
+**Server - Server development**
