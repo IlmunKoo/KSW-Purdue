@@ -1,5 +1,10 @@
 # Raspberry Pi Coding
 
+## Devices
+Raspberry Pi 4
+
+DHT11 Sensor
+
 ## Python-based beacon scanner
 it collects beacon's minor ID in 10 seconds, and send uncollected beacon's minor ID to server.
 Looping the function above.
