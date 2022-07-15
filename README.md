@@ -14,7 +14,7 @@ Your team folder must includes:
 
 (1) Final pptx slides file  
 (2) Paper (PDF format)  
-(3) Code descriptions (Must be very detailed. Points will be awarded for elegance, coding style, and a demonstrated understanding of the practical issues. All code should be well-documented, with comments, and the structure of the code should be straightforward.)
+(3) Code descriptions (Must be very detailed. Points will be awarded for elegance, coding style, and a demonstrated understanding of the practical issues. All code should be well-documented, with comments, and the structure of the code should be straightforward.)  
 (4) Weekly report to show every week update
 
 ### Example:
