@@ -2,6 +2,7 @@
 
 ## Devices
 Raspberry Pi 4
+
 DHT11 Sensor
 
 ## Python-based beacon scanner
