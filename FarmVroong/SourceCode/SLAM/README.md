@@ -11,8 +11,6 @@ The original implementation can be found [here](https://github.com/raulmur/ORB_S
 - Supports a lot of cameras out of the box, such as the Intel RealSense family. See the run section for a list
 - Data I/O via ROS topics
 - Parameters can be set with the rqt_reconfigure gui during runtime
-- Very quick startup through considerably sped up vocab file loading
-- Full Map save and load functionality based on [this PR](https://github.com/raulmur/ORB_SLAM2/pull/381).
 - Loading of all parameters via launch file
 - Supports loading cam parameters from cam_info topic
 
@@ -31,7 +29,8 @@ A C++11 compiler is needed.
 ## Getting the code
 Clone the repository into your catkin workspace:
 ```
-git clone 
+git clone https://github.com/MINJILEE-PURDUE/KSW_2022_Spring_Program.git  
+mv KSW_2022_Spring_Program/FarmVroong/SourceCode/SLAM catkin_ws/src/SLAM
 ```
 
 ## ROS
@@ -55,7 +54,7 @@ sudo apt install libeigen3-dev
 ## Building
 To build the node run
 ```
-catkin build
+catkin_make
 ```
 in your catkin folder.
 
