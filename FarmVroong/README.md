@@ -83,6 +83,21 @@
 
 📤 *Installation*
 
+## Package needed 
+
+    ✔️ gps_umd 
+    ✔️ gpsd
+    ✔️ libi2c-dev
+    ✔️ i2cpwm_board
+    ✔️ joy
+    ✔️ ackermann_vehicle
+    ✔️ teleop_twist_keyboard
+    ✔️ donkey_car
+    ✔️ map2gazebo
+    ✔️ map_server
+    ✔️ trimesh
+
+
     $ git clone https://github.com/MINJILEE-PURDUE/KSW_2022_Spring_Program.git
     $ cd FarmVroong
 
