@@ -73,11 +73,12 @@
     
     ✔️MacBook Air 2021 M1
     
-    ✔️Iphone 6s
+    ✔️Iphone 6
     
     ✔️DJI MAVIC 2 Pro
     
     ✔️DJI Matrice 200 V1/V2
+    
 	
 	
 👨‍👩‍👧‍👧 *Collaborator*
