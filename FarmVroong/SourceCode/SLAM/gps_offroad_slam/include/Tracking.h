@@ -19,7 +19,6 @@
 #include"ORBextractor.h"
 #include "Initializer.h"
 #include "System.h"
-#include "GPS.h"
 
 #include <mutex>
 
@@ -31,7 +30,6 @@ class Map;
 class LocalMapping;
 class LoopClosing;
 class System;
-class GPS;
 
 struct ORBParameters{
     // general parameters for the ORB detector
@@ -50,7 +48,7 @@ public:
     Tracking(System* pSys, ORBVocabulary* pVoc, FrameDrawer* pFrameDrawer, Map* pMap,
              KeyFrameDatabase* pKFDB, const int sensor, ORBParameters& parameters);
 
-    // *** GPS data add ***
+    // GPS data add
     cv::Mat GrabImageRGBD(const cv::Mat &imRGB,const cv::Mat &imD, const double &timestamp, const double &mLatitude, const double &mLongitude);
 
     void SetLocalMapper(LocalMapping* pLocalMapper);
@@ -106,9 +104,9 @@ public:
 
     void Reset();
 
-    // ***Ours*** 
-    double mCurrentLatitude;
-    double mCurrentLongitude;
+    // // GPS data
+    // double mCurrentLatitude;
+    // double mCurrentLongitude;
 
 protected:
 

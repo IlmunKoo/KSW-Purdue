@@ -96,7 +96,7 @@ void System::TrackRGBD(const cv::Mat &im, const cv::Mat &depthmap, const double 
 {
     if(mSensor!=RGBD)
     {
-        cerr << "ERROR: you called TrackRGBD but input sensor was not set to RGBD." << endl;
+        cerr << "ERROR: Called TrackRGBD but input sensor was not set to RGBD." << endl;
         exit(-1);
     }
 
@@ -200,9 +200,6 @@ void System::SaveTrajectoryTUM(const string &filename)
     f.open(filename.c_str());
     f << fixed;
 
-    // Frame pose is stored relative to its reference keyframe (which is optimized by BA and pose graph).
-    // We need to get first the keyframe pose and then concatenate the relative transformation.
-    // Frames not localized (tracking failure) are not saved.
 
     // For each frame we have a reference keyframe (lRit), the timestamp (lT) and a flag
     // which is true when tracking failed (lbL).
@@ -250,7 +247,6 @@ void System::SaveKeyFrameTrajectoryTUM(const string &filename)
 
     // Transform all keyframes so that the first keyframe is at the origin.
     // After a loop closure the first keyframe might not be at the origin.
-    //cv::Mat Two = vpKFs[0]->GetPoseInverse();
 
     ofstream f;
     f.open(filename.c_str());
@@ -259,8 +255,6 @@ void System::SaveKeyFrameTrajectoryTUM(const string &filename)
     for(size_t i=0; i<vpKFs.size(); i++)
     {
         KeyFrame* pKF = vpKFs[i];
-
-       // pKF->SetPose(pKF->GetPose()*Two);
 
         if(pKF->isBad())
             continue;
@@ -296,10 +290,6 @@ void System::SaveTrajectoryKITTI(const string &filename)
     ofstream f;
     f.open(filename.c_str());
     f << fixed;
-
-    // Frame pose is stored relative to its reference keyframe (which is optimized by BA and pose graph).
-    // We need to get first the keyframe pose and then concatenate the relative transformation.
-    // Frames not localized (tracking failure) are not saved.
 
     // For each frame we have a reference keyframe (lRit), the timestamp (lT) and a flag
     // which is true when tracking failed (lbL).

@@ -9,7 +9,6 @@
 #include "Frame.h"
 #include "KeyFrameDatabase.h"
 #include "BoostArchiver.h"
-#include "GPS.h"
 
 #include <mutex>
 
@@ -21,7 +20,6 @@ class Map;
 class MapPoint;
 class Frame;
 class KeyFrameDatabase;
-class GPS;
 
 class KeyFrame
 {
@@ -41,25 +39,24 @@ public:
     void ComputeBoW();
 
     // Covisibility graph functions
-    // *** Change: Add Weight and GPS data in the vector (distance variable added)***
-    void AddConnection(KeyFrame* pKF, const int &weight, const double &distance);
-    //void AddConnection(KeyFrame* pKF, const int &weight);
-    // *** Change: Erase mConnectedKeyFrameDistances and mConnectedKeyFrameWeights ***
+    // Add Weight and GPS data in the vector (distance variable added)
+    void AddConnection(KeyFrame* pKF, const int &weight);
     void EraseConnection(KeyFrame* pKF);
-    // *** Change: Update using final weight ***
+    // Update using final weight 
     void UpdateConnections();
-    // *** Change: Update usign final GPS ***
+    // Update the Best Covisibility map
     void UpdateBestCovisibles(); 
+
     std::set<KeyFrame *> GetConnectedKeyFrames();
     std::vector<KeyFrame* > GetVectorCovisibleKeyFrames();
     std::vector<KeyFrame*> GetBestCovisibilityKeyFrames(const int &N);
-    // *** Change: Using final weight ***
     std::vector<KeyFrame*> GetCovisiblesByWeight(const int &w);
     int GetWeight(KeyFrame* pKF);
-    // *** Get Distance ***
-    double GetDistance(KeyFrame* pKF);
-    // *** Make the final weight
-    int MakeFinalWeight(int weight, double distance);
+    std::pair<double, double> GetGPSData();
+    double GetDistanceWithGPS(const std::pair<double, double> &mGPS);
+
+    // Make the final weight using map count and distance
+    int MakeFinalWeight(int weight,const std::pair<double, double> &mGPS);  
 
     // Spanning tree functions
     void AddChild(KeyFrame* pKF);
@@ -94,15 +91,7 @@ public:
     void SetNotErase();
     void SetErase();
 
-    // *** OURS Set GPS data***
-    void SetGPS(double flatitude, double flongitude);
-    // *** OURS Get GPS data***
-    std::pair<double, double> GetGPSData();
-    // *** Get GPS ***
-    GPS* GetGPS();
-
     // Set/check bad flag
-    // *** Change:
     void SetBadFlag();
     bool isBad();
 
@@ -190,8 +179,11 @@ public:
     const cv::Mat mK;
 
 
-    // The following variables need to be accessed trough a mutex to be thread safe.
+    // The following variables need to be accessed through a mutex to be thread safe.
 protected:
+
+    // GPS data 
+    std::pair<double,double> mkGPS;
 
     // SE3 Pose and camera center
     cv::Mat Tcw;
@@ -203,8 +195,6 @@ protected:
     // MapPoints associated to keypoints
     std::vector<MapPoint*> mvpMapPoints;
 
-    //
-
     // BoW
     KeyFrameDatabase* mpKeyFrameDB;
     ORBVocabulary* mpORBvocabulary;
@@ -212,12 +202,8 @@ protected:
     // Grid over the image to speed up feature matching
     std::vector< std::vector <std::vector<size_t> > > mGrid;
     std::map<KeyFrame*,int> mConnectedKeyFrameWeights;
-    // *** OURS List of Distance ***
-    std::map<KeyFrame*,double> mConnectedKeyFrameDistances;
     std::vector<KeyFrame*> mvpOrderedConnectedKeyFrames;
-    //std::vector<int> mvOrderedWeights;
-    // *** OURS OrderWeight with final weight ***
-    std::vector<int> mvOrderedFinalWeights;
+    std::vector<int> mvOrderedWeights;
     
 
     // Spanning Tree and Loop Edges
@@ -234,9 +220,6 @@ protected:
     float mHalfBaseline; // Only for visualization
 
     Map* mpMap;
-
-    // *** GPS data ***
-    GPS* mkGPS;
 
     std::mutex mMutexPose;
     std::mutex mMutexConnections;

@@ -16,7 +16,6 @@
 #include "LoopClosing.h"
 #include "KeyFrameDatabase.h"
 #include "ORBVocabulary.h"
-#include "GPS.h"
 
 namespace GPS_OFF_SLAM
 {
@@ -25,7 +24,6 @@ class Map;
 class Tracking;
 class LocalMapping;
 class LoopClosing;
-class GPS;
 
 struct ORBParameters;
 
@@ -68,21 +66,12 @@ public:
     void Shutdown();
 
     // Save camera trajectory in the TUM RGB-D dataset format.
-    // Only for stereo and RGB-D. This method does not work for monocular.
-    // Call first Shutdown()
-    // See format details at: http://vision.in.tum.de/data/datasets/rgbd-dataset
     void SaveTrajectoryTUM(const string &filename);
 
     // Save keyframe poses in the TUM RGB-D dataset format.
-    // This method works for all sensor input.
-    // Call first Shutdown()
-    // See format details at: http://vision.in.tum.de/data/datasets/rgbd-dataset
     void SaveKeyFrameTrajectoryTUM(const string &filename);
 
     // Save camera trajectory in the KITTI dataset format.
-    // Only for stereo and RGB-D. This method does not work for monocular.
-    // Call first Shutdown()
-    // See format details at: http://www.cvlibs.net/datasets/kitti/eval_odometry.php
     void SaveTrajectoryKITTI(const string &filename);
 
     //Checks the current mode (mapping or localization) and changes the mode if requested
@@ -126,8 +115,6 @@ private:
     bool load_map;
 
     std::string map_file;
-
-    std::string gps_file;
 
     // Input sensor
     eSensor mSensor;

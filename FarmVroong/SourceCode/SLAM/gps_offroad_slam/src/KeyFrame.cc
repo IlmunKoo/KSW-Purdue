@@ -42,8 +42,6 @@ void KeyFrame::ComputeBoW()
     if(mBowVec.empty() || mFeatVec.empty())
     {
         vector<cv::Mat> vCurrentDesc = Converter::toDescriptorVector(mDescriptors);
-        // Feature vector associate features with nodes in the 4th level (from leaves up)
-        // We assume the vocabulary tree has 6 levels, change the 4 otherwise
         mpORBvocabulary->transform(vCurrentDesc,mBowVec,mFeatVec,4);
     }
 }
@@ -101,32 +99,12 @@ cv::Mat KeyFrame::GetTranslation()
     return Tcw.rowRange(0,3).col(3).clone();
 }
 
-// void KeyFrame::AddConnection(KeyFrame *pKF, const int &weight)
-// {
-//     {
-//         unique_lock<mutex> lock(mMutexConnections);
-//         if(!mConnectedKeyFrameWeights.count(pKF))
-//             mConnectedKeyFrameWeights[pKF]=weight;
-//         else if(mConnectedKeyFrameWeights[pKF]!=weight)
-//             mConnectedKeyFrameWeights[pKF]=weight;
-//         else
-//             return;
-//     }
-
-//     UpdateBestCovisibles();
-// }
-
-// *** Add Weight and GPS data in the vector ***
-void KeyFrame::AddConnection(KeyFrame *pKF, const int &weight, const double &distance)
+void KeyFrame::AddConnection(KeyFrame *pKF, const int &weight)
 {
     {
         unique_lock<mutex> lock(mMutexConnections);
         if(!mConnectedKeyFrameWeights.count(pKF))
-        {
             mConnectedKeyFrameWeights[pKF]=weight;
-            mConnectedKeyFrameDistances[pKF]=distance;
-        }
-        // distance는 바뀌지 않는다고 가정. 
         else if(mConnectedKeyFrameWeights[pKF]!=weight)
             mConnectedKeyFrameWeights[pKF]=weight;
         else
@@ -136,51 +114,14 @@ void KeyFrame::AddConnection(KeyFrame *pKF, const int &weight, const double &dis
     UpdateBestCovisibles();
 }
 
-// void KeyFrame::UpdateBestCovisibles()
-// {
-//     unique_lock<mutex> lock(mMutexConnections);
-//     vector<pair<int,KeyFrame*> > vPairs;
-//     vPairs.reserve(mConnectedKeyFrameWeights.size());
-//     for(map<KeyFrame*,int>::iterator mit=mConnectedKeyFrameWeights.begin(), mend=mConnectedKeyFrameWeights.end(); mit!=mend; mit++)
-//        vPairs.push_back(make_pair(mit->second,mit->first));
 
-//     sort(vPairs.begin(),vPairs.end());
-//     list<KeyFrame*> lKFs;
-//     list<int> lWs;
-//     for(size_t i=0, iend=vPairs.size(); i<iend;i++)
-//     {
-//         lKFs.push_front(vPairs[i].second);
-//         lWs.push_front(vPairs[i].first);
-//     }
-
-//     mvpOrderedConnectedKeyFrames = vector<KeyFrame*>(lKFs.begin(),lKFs.end());
-//     mvOrderedWeights = vector<int>(lWs.begin(), lWs.end());    
-// }
-
-// *** Change: Update using final weight ***
 void KeyFrame::UpdateBestCovisibles()
 {
     unique_lock<mutex> lock(mMutexConnections);
-    vector<pair<int,KeyFrame*> > vPairsW; //MapPoint weight. first: MapPoint weight, second: Keyframe*
-    vPairsW.reserve(mConnectedKeyFrameWeights.size());
-    vector<pair<double,KeyFrame*> > vPairsD; //distance weight. first: distance, second: Keyframe*
-    vPairsD.reserve(mConnectedKeyFrameDistances.size());
-
+    vector<pair<int,KeyFrame*> > vPairs;
+    vPairs.reserve(mConnectedKeyFrameWeights.size());
     for(map<KeyFrame*,int>::iterator mit=mConnectedKeyFrameWeights.begin(), mend=mConnectedKeyFrameWeights.end(); mit!=mend; mit++)
-        vPairsW.push_back(make_pair(mit->second,mit->first));
-    
-    for(map<KeyFrame*,double>::iterator mit=mConnectedKeyFrameDistances.begin(), mend=mConnectedKeyFrameDistances.end(); mit!=mend; mit++)
-        vPairsD.push_back(make_pair(mit->second,mit->first));
-
-    vector<pair<int,KeyFrame*>> vPairs;
-
-    for(size_t i=0, iend=vPairsD.size(); i<iend; i++)
-    {
-        int weight = vPairsW[i].first;
-        double distance = vPairsD[i].first;
-        // first: final weight, second: KeyFrame*
-        vPairs.push_back(make_pair(MakeFinalWeight(weight,distance),vPairsD[i].second));
-    }
+       vPairs.push_back(make_pair(mit->second,mit->first));
 
     sort(vPairs.begin(),vPairs.end());
     list<KeyFrame*> lKFs;
@@ -192,8 +133,9 @@ void KeyFrame::UpdateBestCovisibles()
     }
 
     mvpOrderedConnectedKeyFrames = vector<KeyFrame*>(lKFs.begin(),lKFs.end());
-    mvOrderedFinalWeights = vector<int>(lWs.begin(), lWs.end());    
+    mvOrderedWeights = vector<int>(lWs.begin(), lWs.end());    
 }
+
 
 set<KeyFrame*> KeyFrame::GetConnectedKeyFrames()
 {
@@ -226,12 +168,12 @@ vector<KeyFrame*> KeyFrame::GetCovisiblesByWeight(const int &w)
 
     if(mvpOrderedConnectedKeyFrames.empty())
         return vector<KeyFrame*>();
-    vector<int>::iterator it = upper_bound(mvOrderedFinalWeights.begin(),mvOrderedFinalWeights.end(),w,KeyFrame::weightComp);
-    if(it==mvOrderedFinalWeights.end())
+    vector<int>::iterator it = upper_bound(mvOrderedWeights.begin(),mvOrderedWeights.end(),w,KeyFrame::weightComp);
+    if(it==mvOrderedWeights.end())
         return vector<KeyFrame*>();
     else
     {
-        int n = it-mvOrderedFinalWeights.begin();
+        int n = it-mvOrderedWeights.begin();
         return vector<KeyFrame*>(mvpOrderedConnectedKeyFrames.begin(), mvpOrderedConnectedKeyFrames.begin()+n);
     }
 }
@@ -245,14 +187,28 @@ int KeyFrame::GetWeight(KeyFrame *pKF)
         return 0;
 }
 
-// *** Get Distance ***
-double KeyFrame::GetDistance(KeyFrame *pKF)
+pair<double, double> KeyFrame::GetGPSData()
 {
+    return mkGPS;
+}
+
+// calculate the distance using GPS data
+double KeyFrame::GetDistanceWithGPS(const std::pair<double, double> &mGPS)
+{
+    
     unique_lock<mutex> lock(mMutexConnections);
-    if(mConnectedKeyFrameDistances.count(pKF))
-        return mConnectedKeyFrameDistances[pKF];
-    else
-        return 0;
+    double mkLatitude = mkGPS.first;
+    double mkLongitude = mkGPS.second;
+    double flatitude = mGPS.first;
+    double flongitude = mGPS.second;
+    
+    double R = 6378.137; // Radius of earth in KM
+    double dLatitude = (mkLatitude-flatitude) * M_PI / 180;
+    double dLongitude = (mkLongitude-flongitude) * M_PI  / 180;
+    double a = std::pow(sin(dLatitude/2),2) + cos(flatitude * M_PI / 180) * cos(mkLatitude * M_PI / 180) * std::pow(sin(dLongitude/2),2);
+    double c = 2 * atan2(sqrt(a), sqrt(1-a));
+    double distance = R * c;
+    return distance*1000; // meters
 }
 
 void KeyFrame::AddMapPoint(MapPoint *pMP, const size_t &idx)
@@ -365,57 +321,54 @@ void KeyFrame::UpdateConnections()
         {
             if(mit->first->mnId==mnId)
                 continue;
-            if(!KFcounterD.count(mit->first))
-            {
-                pair<double, double> kGPS= mit->first->GetGPSData();
-                double distance = mkGPS->GetDistanceWithGPS(kGPS.first, kGPS.second);
-                KFcounterD[mit->first]=distance;
-            }
-                
             KFcounter[mit->first]++;
         }
     }
 
-    // This should not happen
     if(KFcounter.empty())
         return;
 
     //If the counter is greater than threshold add connection
     //In case no keyframe counter is over threshold add the one with maximum counter
-    int Wmax = 0; // *** Final weight ***
-    int nmax = 0; // *** MapPoint weight ***
-    double dmax = 0; // *** Distance weight ***
+    int Wmax = 0; // Final weight 
+    int nmax = 0; // MapPoint weight
+    double dmax = 0; // Distance weight
     KeyFrame* pKFmax=NULL;
-    // *** MapPoint ***
+    // MapPoint
     int thW = 15;
-    // *** Distance  
-    int thD = 1;
+    // Distance  
+    int thD = 0;
 
     vector<pair<int,KeyFrame*> > vPairs;
     vPairs.reserve(KFcounter.size());
     for(map<KeyFrame*,int>::iterator mit=KFcounter.begin(), mend=KFcounter.end(); mit!=mend; mit++)
     {
-        pair<double, double> kGPS= mit->first->GetGPSData();
-        double distance = mkGPS->GetDistanceWithGPS(kGPS.first, kGPS.second);
-        int finalWeight = MakeFinalWeight(mit->second,distance);
+        pair<double, double> mGPS= mit->first->GetGPSData();
+        double distance = GetDistanceWithGPS(mGPS);
+        int mapcount = mit->second;
+        int finalWeight = MakeFinalWeight(mit->second,mGPS);
+        
+        // Final weight update
+        mit->second = finalWeight;
+
         if(finalWeight>Wmax)
         {
             // Final weight update
             Wmax = finalWeight;
             // mappoint update
-            nmax = mit->second;
+            nmax = mapcount;
             // distance update
             dmax = distance;
             // KeyFrame update
             pKFmax=mit->first;
         }
-        if(mit->second>=thW && distance>=thD)
+        if(mapcount>=thW && distance>=thD)
         {
             // final weight update
-            vPairs.push_back(make_pair(Wmax,mit->first));
+            vPairs.push_back(make_pair(mit->second,mit->first));
             
             // Addconection
-            (mit->first)->AddConnection(this,mit->second,distance);
+            (mit->first)->AddConnection(this,mit->second);
         }
     }
 
@@ -423,9 +376,8 @@ void KeyFrame::UpdateConnections()
     {
         // Update final weight of Max frame
         vPairs.push_back(make_pair(Wmax,pKFmax));
-
         // Addconnection
-        pKFmax->AddConnection(this,nmax,dmax);
+        pKFmax->AddConnection(this,Wmax);
     }
 
     sort(vPairs.begin(),vPairs.end());
@@ -440,12 +392,9 @@ void KeyFrame::UpdateConnections()
     {
         unique_lock<mutex> lockCon(mMutexConnections);
 
-        // mspConnectedKeyFrames = spConnectedKeyFrames;
         mConnectedKeyFrameWeights = KFcounter;
-        // *** Update mConnectedKeyFrameDistance ***
-        mConnectedKeyFrameDistances = KFcounterD;
         mvpOrderedConnectedKeyFrames = vector<KeyFrame*>(lKFs.begin(),lKFs.end());
-        mvOrderedFinalWeights = vector<int>(lWs.begin(), lWs.end());
+        mvOrderedWeights = vector<int>(lWs.begin(), lWs.end());
 
         if(mbFirstConnection && mnId!=0)
         {
@@ -457,13 +406,12 @@ void KeyFrame::UpdateConnections()
     }
 }
 
-// *** OURS Make Final weight 
-int KeyFrame::MakeFinalWeight(int weight, double distance)
+// Make final weight using map point count and distance
+int KeyFrame::MakeFinalWeight(int weight, const std::pair<double, double> &mGPS)
 {
-    int finalWeight = (int)(0.6*weight+0.4*distance);
-    std::cout<<"weight update"<<std::endl;
-    
-    // Final weight update할 함수 작성하기
+    double distance = GetDistanceWithGPS(mGPS);
+    int finalWeight = (int)(weight-0.1*distance);
+
     return finalWeight;
 }
 
@@ -563,7 +511,6 @@ void KeyFrame::SetBadFlag()
         unique_lock<mutex> lock1(mMutexFeatures);
 
         mConnectedKeyFrameWeights.clear();
-        mConnectedKeyFrameDistances.clear();
         mvpOrderedConnectedKeyFrames.clear();
 
         // Update Spanning Tree
@@ -648,7 +595,6 @@ void KeyFrame::EraseConnection(KeyFrame* pKF)
         if(mConnectedKeyFrameWeights.count(pKF))
         {
             mConnectedKeyFrameWeights.erase(pKF);
-            mConnectedKeyFrameDistances.erase(pKF);
             bUpdate=true;
         }
     }
@@ -720,29 +666,6 @@ cv::Mat KeyFrame::UnprojectStereo(int i)
     else
         return cv::Mat();
 }
-
-// *** Set GPS data ***
-void KeyFrame::SetGPS(double flatitude, double flongitude)
-{
-    //unique_lock<mutex> lock2(mMutexPose);
-    mkGPS->SetGPS(flatitude,flongitude);
-}
-
-// *** Get GPS data ***
-pair<double, double> KeyFrame::GetGPSData()
-{
-    // unique_lock<mutex> lock(mMutexFeatures);
-    // unique_lock<mutex> lock2(mMutexPose);
-    return mkGPS->GetGPS();
-}
-
-GPS* KeyFrame::GetGPS()
-{
-    // unique_lock<mutex> lock(mMutexFeatures);
-    // unique_lock<mutex> lock2(mMutexPose);
-    return mkGPS;
-}
-
 
 float KeyFrame::ComputeSceneMedianDepth(const int q)
 {
@@ -850,7 +773,7 @@ void KeyFrame::serialize(Archive &ar, const unsigned int version)
     {
         // Grid related
         unique_lock<mutex> lock_connection(mMutexConnections);
-        ar & mGrid & mConnectedKeyFrameWeights & mvpOrderedConnectedKeyFrames & mConnectedKeyFrameDistances & mvOrderedFinalWeights;
+        ar & mGrid & mConnectedKeyFrameWeights & mvpOrderedConnectedKeyFrames & mvOrderedWeights;
         // Spanning Tree and Loop Edges
         ar & mbFirstConnection & mpParent & mspChildrens & mspLoopEdges;
         // Bad flags

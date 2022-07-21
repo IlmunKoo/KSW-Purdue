@@ -16,7 +16,6 @@ Frame::Frame()
 {}
 
 //Copy Constructor
-// *** GPS copy add ***
 Frame::Frame(const Frame &frame)
     :mpORBvocabulary(frame.mpORBvocabulary), mpORBextractorLeft(frame.mpORBextractorLeft), mpORBextractorRight(frame.mpORBextractorRight),
      mTimeStamp(frame.mTimeStamp), mK(frame.mK.clone()), mDistCoef(frame.mDistCoef.clone()),
@@ -39,11 +38,10 @@ Frame::Frame(const Frame &frame)
 }
 
 
-// *** Change: Add GPS data initializtion ***
-// RGB-D camera
-Frame::Frame(const cv::Mat &imGray, const cv::Mat &imDepth, const double &timeStamp, ORBextractor* extractor,ORBVocabulary* voc, cv::Mat &K, cv::Mat &distCoef, const float &bf, const float &thDepth, GPS* fGPS)
+// Frame Constructor
+Frame::Frame(const cv::Mat &imGray, const cv::Mat &imDepth, const double &timeStamp, ORBextractor* extractor,ORBVocabulary* voc, cv::Mat &K, cv::Mat &distCoef, const float &bf, const float &thDepth,const double &mCurrentLatitude, const double &mCurrentLongitude)
     :mpORBvocabulary(voc), mpORBextractorLeft(extractor), mpORBextractorRight(static_cast<ORBextractor*>(NULL)),
-     mTimeStamp(timeStamp), mK(K.clone()), mDistCoef(distCoef.clone()), mbf(bf), mThDepth(thDepth), mfGPS(fGPS)
+     mTimeStamp(timeStamp), mK(K.clone()), mDistCoef(distCoef.clone()), mbf(bf), mThDepth(thDepth)
 {
     // Frame ID
     mnId=nNextId++;
@@ -92,6 +90,8 @@ Frame::Frame(const cv::Mat &imGray, const cv::Mat &imDepth, const double &timeSt
 
     mb = mbf/fx;
 
+    mfGPS = make_pair(mCurrentLatitude,mCurrentLongitude);
+
     AssignFeaturesToGrid();
 }
 
@@ -121,7 +121,6 @@ void Frame::ExtractORB(int flag, const cv::Mat &im)
         (*mpORBextractorRight)(im,cv::Mat(),mvKeysRight,mDescriptorsRight);
 }
 
-// *** GPS data 
 void Frame::SetPose(cv::Mat Tcw)
 {
     mTcw = Tcw.clone();
@@ -134,6 +133,12 @@ void Frame::UpdatePoseMatrices()
     mRwc = mRcw.t();
     mtcw = mTcw.rowRange(0,3).col(3);
     mOw = -mRcw.t()*mtcw;
+}
+
+// Get GPS pair
+pair<double, double> Frame::GetGPSData()
+{
+    return mfGPS;
 }
 
 bool Frame::isInFrustum(MapPoint *pMP, float viewingCosLimit)
@@ -531,19 +536,6 @@ void Frame::ComputeStereoFromRGBD(const cv::Mat &imDepth)
             mvuRight[i] = kpU.pt.x-mbf/d;
         }
     }
-}
-
-// *** Get GPS pair ***
-pair<double, double> Frame::GetGPSData()
-{
-    //unique_lock<mutex> lock(mMutexPos);
-    return mfGPS->GetGPS();
-}
-
-// *** Get GPS variance ***
-GPS* Frame::GetGPS()
-{
-    return mfGPS;
 }
 
 cv::Mat Frame::UnprojectStereo(const int &i)

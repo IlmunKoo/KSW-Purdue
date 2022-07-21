@@ -110,7 +110,6 @@ gps_offroad_slam/src/Map.cc
 gps_offroad_slam/src/Optimizer.cc
 gps_offroad_slam/src/PnPsolver.cc
 gps_offroad_slam/src/Frame.cc
-gps_offroad_slam/src/GPS.cc
 gps_offroad_slam/src/KeyFrameDatabase.cc
 gps_offroad_slam/src/Sim3Solver.cc
 gps_offroad_slam/src/Initializer.cc

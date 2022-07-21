@@ -10,7 +10,6 @@
 #include "ORBVocabulary.h"
 #include "KeyFrame.h"
 #include "ORBextractor.h"
-#include "GPS.h"
 
 #include <opencv2/opencv.hpp>
 
@@ -21,7 +20,6 @@ namespace GPS_OFF_SLAM
 
 class MapPoint;
 class KeyFrame;
-class GPS;
 
 class Frame
 {
@@ -31,8 +29,8 @@ public:
     // Copy constructor.
     Frame(const Frame &frame);
 
-    // *** Chagne: Add GPS data. Constructor for RGB-D cameras. ***
-    Frame(const cv::Mat &imGray, const cv::Mat &imDepthconst, const double &timeStamp, ORBextractor* extractor, ORBVocabulary* voc, cv::Mat &K, cv::Mat &distCoef, const float &bf, const float &thDepth, GPS* fGPS);
+    // Add GPS data. Constructor for RGB-D cameras.
+    Frame(const cv::Mat &imGray, const cv::Mat &imDepthconst, const double &timeStamp, ORBextractor* extractor, ORBVocabulary* voc, cv::Mat &K, cv::Mat &distCoef, const float &bf, const float &thDepth, const double &mCurrentLatitude, const double &mCurrentLongitude);
 
     // Extract ORB on the image. 0 for left image and 1 for right image.
     void ExtractORB(int flag, const cv::Mat &im);
@@ -66,14 +64,10 @@ public:
     vector<size_t> GetFeaturesInArea(const float &x, const float  &y, const float  &r, const int minLevel=-1, const int maxLevel=-1) const;
 
     // Search a match for each keypoint in the left image to a keypoint in the right image.
-    // If there is a match, depth is computed and the right coordinate associated to the left keypoint is stored.
     void ComputeStereoMatches();
 
-    // *** OURS get GPS data***
+    // Get GPS data
     std::pair<double, double> GetGPSData();
-
-    // *** Get GPS variance ***
-    GPS* GetGPS();
 
     // Associate a "right" coordinate to a keypoint if there is valid depth in the depthmap.
     void ComputeStereoFromRGBD(const cv::Mat &imDepth);
@@ -108,20 +102,16 @@ public:
     float mb;
 
     // Threshold close/far points. Close points are inserted from 1 view.
-    // Far points are inserted as in the monocular case from 2 views.
     float mThDepth;
 
     // Number of KeyPoints.
     int N;
 
-    // Vector of keypoints (original for visualization) and undistorted (actually used by the system).
-    // In the stereo case, mvKeysUn is redundant as images must be rectified.
-    // In the RGB-D case, RGB images can be distorted.
+    // Vector of keypoints.
     std::vector<cv::KeyPoint> mvKeys, mvKeysRight;
     std::vector<cv::KeyPoint> mvKeysUn;
 
     // Corresponding stereo coordinate and depth for each keypoint.
-    // "Monocular" keypoints have a negative value.
     std::vector<float> mvuRight;
     std::vector<float> mvDepth;
 
@@ -170,15 +160,12 @@ public:
 
     static bool mbInitialComputations;
 
-    // *** OURS GPS data ***
-    GPS* mfGPS;
-
+    // GPS data 
+    std::pair<double, double> mfGPS;
 
 private:
 
     // Undistort keypoints given OpenCV distortion parameters.
-    // Only for the RGB-D case. Stereo must be already rectified!
-    // (called in the constructor).
     void UndistortKeyPoints();
 
     // Computes image bounds for the undistorted image (called in the constructor).

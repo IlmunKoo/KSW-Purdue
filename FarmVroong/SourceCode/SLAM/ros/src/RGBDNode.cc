@@ -28,14 +28,11 @@ int main(int argc, char **argv)
 
 RGBDNode::RGBDNode (const GPS_OFF_SLAM::System::eSensor sensor, ros::NodeHandle &node_handle, image_transport::ImageTransport &image_transport) : Node (sensor, node_handle, image_transport) {
   rgb_subscriber_ = new message_filters::Subscriber<sensor_msgs::Image> (node_handle, "/camera/rgb/image_raw", 1);
-  //rgb_subscriber_ = new message_filters::Subscriber<sensor_msgs::Image> (node_handle, "/camera/color/image_raw", 1);
-  // depth_subscriber_ = new message_filters::Subscriber<sensor_msgs::Image> (node_handle, "/camera/depth_registered/image_raw", 1);
   depth_subscriber_ = new message_filters::Subscriber<sensor_msgs::Image> (node_handle, "/camera/depth_registered/image_raw", 1);
   gps_subscriber_ = new message_filters::Subscriber<sensor_msgs::NavSatFix> (node_handle, "/fix", 1);
   camera_info_topic_ = "/camera/color/camera_info";
 
   sync_ = new message_filters::Synchronizer<sync_pol> (sync_pol(10), *rgb_subscriber_, *depth_subscriber_);
-  std::cout<<std::endl<<"BIND IMAGE"<<std::endl;
   gps_subscriber_->registerCallback(boost::bind(&RGBDNode::GpsCallBack, this, _1));
   sync_->registerCallback(boost::bind(&RGBDNode::ImageCallback, this, _1, _2));
 }
@@ -69,14 +66,15 @@ void RGBDNode::ImageCallback (const sensor_msgs::ImageConstPtr& msgRGB, const se
 
   current_frame_time_ = msgRGB->header.stamp;
   
-  //orb_slam_->TrackRGBD(cv_ptrRGB->image,cv_ptrD->image,cv_ptrRGB->header.stamp.toSec());
+  //Starting Track
   gps_off_slam->TrackRGBD(cv_ptrRGB->image,cv_ptrD->image,cv_ptrRGB->header.stamp.toSec(),latitude,longitude);
 
   Update ();
 }
 
+// GPS CALL
 void RGBDNode::GpsCallBack(const sensor_msgs::NavSatFix::ConstPtr& msgG)
 {
-  latitude = msgG->latitude;
-  longitude = msgG->longitude;
+  latitude = static_cast<double>(msgG->latitude);
+  longitude = static_cast<double>(msgG->longitude);
 }

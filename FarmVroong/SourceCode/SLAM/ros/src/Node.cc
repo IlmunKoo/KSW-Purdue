@@ -17,7 +17,6 @@ Node::~Node () {
   // Save camera trajectory
   gps_off_slam->SaveKeyFrameTrajectoryTUM("KeyFrameTrajectory.txt");
 
-  delete gps_off_slam;
 }
 
 void Node::Init () {
@@ -93,68 +92,12 @@ void Node::PublishMapPoints (std::vector<GPS_OFF_SLAM::MapPoint*> map_points) {
   map_points_publisher_.publish (cloud);
 }
 
-// tf2::Transform Node::TransformToTarget (tf2::Transform tf_in, std::string frame_in, std::string frame_target) {
-//   // Transform tf_in from frame_in to frame_target
-//   tf2::Transform tf_map2orig = tf_in;
-//   tf2::Transform tf_orig2target;
-//   tf2::Transform tf_map2target;
-
-//   tf2::Stamped<tf2::Transform> transformStamped_temp;
-//   try {
-//     // Get the transform from camera to target
-//     geometry_msgs::TransformStamped tf_msg = tfBuffer->lookupTransform(frame_in, frame_target, ros::Time(0));
-//     // Convert to tf2
-//     tf2::fromMsg(tf_msg, transformStamped_temp);
-//     tf_orig2target.setBasis(transformStamped_temp.getBasis());
-//     tf_orig2target.setOrigin(transformStamped_temp.getOrigin());
-
-//   } catch (tf2::TransformException &ex) {
-//     ROS_WARN("%s",ex.what());
-//     //ros::Duration(1.0).sleep();
-//     tf_orig2target.setIdentity();
-//   }
-
-//   /* 
-//     // Print debug info
-//     double roll, pitch, yaw;
-//     // Print debug map2orig
-//     tf2::Matrix3x3(tf_map2orig.getRotation()).getRPY(roll, pitch, yaw);
-//     ROS_INFO("Static transform Map to Orig [%s -> %s]",
-//                     map_frame_id_param_.c_str(), frame_in.c_str());
-//     ROS_INFO(" * Translation: {%.3f,%.3f,%.3f}",
-//                     tf_map2orig.getOrigin().x(), tf_map2orig.getOrigin().y(), tf_map2orig.getOrigin().z());
-//     ROS_INFO(" * Rotation: {%.3f,%.3f,%.3f}",
-//                     RAD2DEG(roll), RAD2DEG(pitch), RAD2DEG(yaw));
-//     // Print debug tf_orig2target
-//     tf2::Matrix3x3(tf_orig2target.getRotation()).getRPY(roll, pitch, yaw);
-//     ROS_INFO("Static transform Orig to Target [%s -> %s]",
-//                     frame_in.c_str(), frame_target.c_str());
-//     ROS_INFO(" * Translation: {%.3f,%.3f,%.3f}",
-//                     tf_orig2target.getOrigin().x(), tf_orig2target.getOrigin().y(), tf_orig2target.getOrigin().z());
-//     ROS_INFO(" * Rotation: {%.3f,%.3f,%.3f}",
-//                     RAD2DEG(roll), RAD2DEG(pitch), RAD2DEG(yaw));
-//     // Print debug map2target
-//     tf2::Matrix3x3(tf_map2target.getRotation()).getRPY(roll, pitch, yaw);
-//     ROS_INFO("Static transform Map to Target [%s -> %s]",
-//                     map_frame_id_param_.c_str(), frame_target.c_str());
-//     ROS_INFO(" * Translation: {%.3f,%.3f,%.3f}",
-//                     tf_map2target.getOrigin().x(), tf_map2target.getOrigin().y(), tf_map2target.getOrigin().z());
-//     ROS_INFO(" * Rotation: {%.3f,%.3f,%.3f}",
-//                     RAD2DEG(roll), RAD2DEG(pitch), RAD2DEG(yaw));
-//   */
-
-//   // Transform from map to target
-//   tf_map2target = tf_map2orig * tf_orig2target;
-//   return tf_map2target;
-// }
-
 void Node::PublishPositionAsTransform (cv::Mat position) {
   // Get transform from map to camera frame
   tf2::Transform tf_transform = TransformFromMat(position);
 
   // Make transform from camera frame to target frame
   tf2::Transform tf_map2target = tf_transform;
-  //TransformToTarget(tf_transform, camera_frame_id_param_, target_frame_id_param_);
 
   // Make message
   tf2::Stamped<tf2::Transform> tf_map2target_stamped;
@@ -171,7 +114,6 @@ void Node::PublishPositionAsPoseStamped (cv::Mat position) {
 
   // Make transform from camera frame to target frame
   tf2::Transform tf_position_target = tf_position;
-  // TransformToTarget(tf_position, camera_frame_id_param_, target_frame_id_param_);
   
   // Make message
   tf2::Stamped<tf2::Transform> tf_position_target_stamped;

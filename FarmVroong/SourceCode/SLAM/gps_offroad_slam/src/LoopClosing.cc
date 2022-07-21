@@ -47,8 +47,7 @@ void LoopClosing::Run()
             if(DetectLoop())
             {
                // Compute similarity transformation [sR|t]
-               // In the stereo/RGBD case s=1
-               // Accept Loop out of candidates
+               //  s=1
                if(ComputeSim3())
                {
                    // Perform loop fusion and pose graph optimization
@@ -93,22 +92,6 @@ bool LoopClosing::DetectLoop()
         mpCurrentKF->SetNotErase();
     }
 
-    // *** LoopClosing thread is always running. *** 
-    // *** To reduce the needless computation, 
-    // *** GPS decides whether the car revisits the frame near the keyframe stored at the Database.
-    // *** If so, the first step of loop closing, "DetectLoop()" doesn't run..
-    
-    int thofDistance = 10; // 
-    const vector<KeyFrame*> vpConnectedKeyFrames = mpCurrentKF->GetVectorCovisibleKeyFrames();
-    for(size_t i=0; i<vpConnectedKeyFrames.size(); i++)
-    {
-        KeyFrame* pKF = vpConnectedKeyFrames[i];
-        int Distance = pKF -> GetDistance(mpCurrentKF);
-        if(Distance > thofDistance)
-            return false; 
-    }
-    // *** End ***
-
 
     //If the map contains less than 10 KF or less than 10 KF have passed from last loop detection
     if(mpCurrentKF->mnId<mLastLoopKFid+10)
@@ -117,19 +100,27 @@ bool LoopClosing::DetectLoop()
         mpCurrentKF->SetErase();
         return false;
     }
-
-    // DetectLoopCandidates에 들어갈 minScore를 구하는 부분
+     
     // Compute reference BoW similarity score
     // This is the lowest score to a connected keyframe in the covisibility graph
-    // We will impose loop candidates to have a higher similarity than this
-    //const vector<KeyFrame*> vpConnectedKeyFrames = mpCurrentKF->GetVectorCovisibleKeyFrames();
+    // LoopClosing thread is always running. 
+    // To reduce the needless computation, 
+    // GPS decides whether revisiting the frame near the keyframe stored at the Database.
+    const vector<KeyFrame*> vpConnectedKeyFrames = mpCurrentKF->GetVectorCovisibleKeyFrames();
     const DBoW2::BowVector &CurrentBowVec = mpCurrentKF->mBowVec;
     float minScore = 1;
+    int thofDistance = 10; // distance trashold
     for(size_t i=0; i<vpConnectedKeyFrames.size(); i++)
     {
         KeyFrame* pKF = vpConnectedKeyFrames[i];
         if(pKF->isBad())
             continue;
+
+        pair<double,double> mGPS = mpCurrentKF->GetGPSData();
+        double distance = pKF -> GetDistanceWithGPS(mGPS);
+        if(distance > thofDistance)
+            continue; 
+
         const DBoW2::BowVector &BowVec = pKF->mBowVec;
 
         float score = mpORBVocabulary->score(CurrentBowVec, BowVec);
@@ -153,7 +144,6 @@ bool LoopClosing::DetectLoop()
     // For each loop candidate check consistency with previous loop candidates
     // Each candidate expands a covisibility group (keyframes connected to the loop candidate in the covisibility graph)
     // A group is consistent with a previous group if they share at least a keyframe
-    // We must detect a consistent loop in several consecutive keyframes to accept it
     mvpEnoughConsistentCandidates.clear();
 
     vector<ConsistentGroup> vCurrentConsistentGroups;
@@ -235,8 +225,8 @@ bool LoopClosing::ComputeSim3()
 
     const int nInitialCandidates = mvpEnoughConsistentCandidates.size();
 
-    // We compute first ORB matches for each candidate
-    // If enough matches are found, we setup a Sim3Solver
+    // Compute first ORB matches for each candidate
+    // If enough matches are found, setup a Sim3Solver
     ORBmatcher matcher(0.75,true);
 
     vector<Sim3Solver*> vpSim3Solvers;
@@ -537,8 +527,6 @@ void LoopClosing::CorrectLoop()
 
     }
 
-    // Project MapPoints observed in the neighborhood of the loop keyframe
-    // into the current keyframe and neighbors using corrected poses.
     // Fuse duplications.
     SearchAndFuse(CorrectedSim3);
 
@@ -651,9 +639,6 @@ void LoopClosing::RunGlobalBundleAdjustment(unsigned long nLoopKF)
     Optimizer::GlobalBundleAdjustemnt(mpMap,10,&mbStopGBA,nLoopKF,false);
 
     // Update all MapPoints and KeyFrames
-    // Local Mapping was active during BA, that means that there might be new keyframes
-    // not included in the Global BA and they are not consistent with the updated map.
-    // We need to propagate the correction through the spanning tree
     {
         unique_lock<mutex> lock(mMutexGBA);
         if(idx!=mnFullBAIdx)
