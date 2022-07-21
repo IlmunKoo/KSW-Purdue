@@ -1,0 +1,11 @@
+.gm-style-iw {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.gm-style-iw-d {
+  overflow: hidden !important;
+}
+.gm-style-iw-a .gm-style-iw-t::after {
+  display: none;
+}
