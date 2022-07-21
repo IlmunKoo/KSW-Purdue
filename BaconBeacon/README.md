@@ -34,15 +34,14 @@
 💡 *Novelty*
 
     1. High accuracy of indoor localization using iBeacon
-       => We researched Wi-Fi based indoor localization, and we figured out that it is not accurate enough due 
-       to lack of Access Points.
-       We include beacon and Access Point when we localize, and we will gain a 22% increase in accuracy.
+       => Tested regression model of distance and RSSI, and it is not as expected. Rather than regression model, deep learning techniques were used for indoor 
+       localization. by using Deep Neural Network model, gained 94% of accuracy on testing phase and 70% of actual accuracy on localization.
       
     2. Real-Time socket communication and Optimized Route Algorithm
        => Most previous research works on Evacuation Algorithms based on the database. It means that they cannot modify 
        the evacuation route based on real-time data.
        Our team concentrates on real-time route modification to make sure that victims can stay away from hazards
-       Our project also detects the location of the fire, so people may know the location of the fire.
+       Our project also detects the location of the fire, so people may know the location of the fire and stay away.
       
     3. Augmented Reality
        => Since we developed an optimized route algorithm to calculate the best route, if we cannot advise victims 
@@ -67,11 +66,12 @@
     
     4. If the smartphone opens the application, it starts collecting Beacon's RSSI, UUID, major and minor value.
     
-    5. Smartphone starts calculating the current location from the data collected via machine learning and sends 
-    server location data
+    5. Smartphone starts calculating the current location from the data collected via deep learning and sends 
+    server his or her location
     
-    6. Server calculates the fastest way to escape and sends it back to the smartphone. At this part, A* or 
-    Dijkstra Algorithm will be used
+    6. Server calculates the optimized route to escape via Reinforced Learning and sends it back to the smartphone as List. 
+    
+    7. Smartphone receives the route, and show it in Navigation Application. Navigation will be provided both AR and 2 Dimentional navigation.
     
  <p align="center">
    <img src="https://github.com/BeaconAR/BEST/raw/main/image/topology.png" alt="Image Error"/>
@@ -81,7 +81,7 @@
     smartphone with TCP connection, it makes the smartphone to receive beacon’s signal. After receiving the signal, it calculates RSSI values and localize the user’s 
     position by using triangulation.
 
-    🥕Optimal Evacuation Algorithm : The smartphone sends the calculated position to the server through TCP connection. The position can be synchronized in real-time 
+    🥕Optimal Evacuation Algorithm : The smartphone sends the calculated position to the server through TCP socket connection. The position can be synchronized in real-time 
     due to TCP connection. The server configures an optimal evacuation route with the received position and our algorithm. If any change occurs, server will find a 
     new evacuation route and notify it to the smartphone.
 
@@ -97,11 +97,15 @@
     
     ✔️Swift 5.5
     
+    ✔️Xcode
+    
     ✔️iPhone 12 with iOS 15.4
     
     ✔️Kotlin
 
     ✔️Android Studio
+    
+    ✔️Samsung Galaxy A30
   
 👨‍👩‍👧‍👧 *Collaborator*
      
