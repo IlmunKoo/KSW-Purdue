@@ -80,6 +80,7 @@ Two Payloads of 64g and 68g
 ✔️ Numpy 1.21.6
 ✔️ Pandas 1.4.3
 ✔️ Soundfile 0.10.3.post1
+✔️ Scikit-learn 0.24
 ```
 
 :dizzy: Installation
