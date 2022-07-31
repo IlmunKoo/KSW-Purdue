@@ -50,8 +50,10 @@ can be obtained by a single collection trip.
 ```markdown!
 🏄 Hardware
 
-DJI Phantom 4 Pro with two payloads  
+DJI Phantom 4 Pro
+EVO Pro 2
 MacBook Pro 16(2019) as a microphone. 
+Two Payloads of 64g and 68g
 
 🏂 Software
 
@@ -72,11 +74,12 @@ MacBook Pro 16(2019) as a microphone.
 
 :desktop_computer: Environment Setting
 ```markdown
-✔️ Pytorch 1.11.0   
 ✔️ Python 3.10.x  
-✔️ MacBook Pro 16
-✔️ DJI Phantom pro 4
-
+✔️ Librosa v0.9.2
+✔️ Keras 2.8.0
+✔️ Numpy 1.21.6
+✔️ Pandas 1.4.3
+✔️ Soundfile 0.10.3.post1
 ```
 
 :dizzy: Installation
