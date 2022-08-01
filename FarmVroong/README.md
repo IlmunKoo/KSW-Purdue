@@ -33,10 +33,16 @@
 💡 *Novelty*
 
     1. Developed visual SLAM using monocular camera and GPS.
-       => SLAM method is usually based on a Camera or 3D-LiDAR. This research used camera, which is much cheaper than 3D-LiDAR, and utilized the advantage of GPS sensor that performs well at the open outdoor. Most of all, GPS data prevented bootless computing, contributed to making Covisibility Graph, and localized the position of the vehicle when the tracking failed.  
+       => SLAM method is usually based on a Camera or 3D-LiDAR. 
+       This research used camera, which is much cheaper than 3D-LiDAR, and utilized the advantage of GPS sensor that performs well at the open outdoor. 
+       Most of all, GPS data prevented bootless computing, contributed to making Covisibility Graph, and localized the position of the vehicle when the
+       tracking failed.  
       
     2. Developed Path planning considering path conditions to improve driving quality.
-       => Path Planning methods are fundamentally estimated based on the shortest path. However, when it comes to off-road, Path Planning should consider not only the time but also the stability of the road. In order to achieve the goal, geographical features such as slope, trunk, and rocks is required and used for calculating the priority of the path. A stable path can be marked using GPS coordinates and given more weight. Thus, the vehicle can select more stable paths stochastically. 
+       => Path Planning methods are fundamentally estimated based on the shortest path. 
+       However, when it comes to off-road, Path Planning should consider not only the time but also the stability of the road. 
+       In order to achieve the goal, geographical features such as slope, trunk, and rocks is required and used for calculating the priority of the path. 
+       A stable path can be marked using GPS coordinates and given more weight. Thus, the vehicle can select more stable paths stochastically. 
 
 🏛 *System Overview*
  <p align="center">
@@ -44,7 +50,7 @@
 </p>
 
     
-    This is an overview of system architecture. It consists of hardware, middleware, and software, and collects data through RGB-D camera, GPS and IMU.
+    This is an overview of system architecture. It consists of hardware, middleware, and software, and collects data through camera and GPS.
 
 <p align="center">
 <img width="608" alt="image" src="https://user-images.githubusercontent.com/53038354/170869449-d4f0c003-6d6f-40da-b7f7-e889dc32b6ba.png">
