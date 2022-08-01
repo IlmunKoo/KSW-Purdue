@@ -11,13 +11,19 @@
 
 🧖🏻‍♀️ *Problem Statement*
 
-    As self-driving cars are commercialized, a lot of data accumulates and technology is rapidly developing as well. Therefore, in on-road environment, the robust performance of autonomous vehicles is already shown. However, in off-road environment, self driving shows low performance yet. The reason why it does not perform well is that it is hard to build datasets since off-road environments have unstructured class boundaries, uneven terrain, strong textures, and irregular characteristics. Moreover, there is no uniform data for off-road experiments due to the various environments, including deserts, forests, and farms. Thus, it is more difficult to recognize the surrounding environments at the off-road than the on-road and is required to determine the scope.
-
-    In an unknown environment, an autonomous vehicle must percept the map of its environment and determine its location through Simultaneous Localization and Mapping (SLAM). It is critical that there are some limitations and delimitations of sensor data at the outdoor. For example, since the depth sensor of camera does not work well due to the ultravioloet rays, RGB-D SLAM methods cannot be applicable. In addition, 3D LiDAR is not cost efficient. Therefore, we used one camera and added GPS data as well. 
-    
-    Meanwhile, on the road, the optimal route is decided based on time, fuel efficiency, and distance. On the other hand, on off-road, considering the irregular condition of the path, such as fine sand, mud and gravel, it is important to take into a consideration the condition of the path. Therefore, even if one path spends more time than the other, it can be decided as a optimal path. 
-
-    Likewise, SLAM and Path Planning methods which optimizes at the off-road is required. 
+     As self-driving cars are commercialized, a lot of data accumulates and technology is rapidly developing as well. 
+     Therefore, in on-road environment, the robust performance of autonomous vehicles is already shown.
+     However, in off-road environment, self driving shows low performance yet. 
+     The reason why it does not perform well is that it is hard to build datasets since off-road environments have unstructured class boundaries, uneven terrain, strong textures, and irregular characteristics. 
+     Moreover, there is no uniform data for off-road experiments due to the various environments, including deserts, forests, and farms. Thus, it is more difficult to recognize the surrounding environments at the off-road than the on-road and is required to determine the scope.
+     In an unknown environment, an autonomous vehicle must percept the map of its environment and determine its location through Simultaneous Localization and Mapping (SLAM). 
+     It is critical that there are some limitations and delimitations of sensor data at the outdoor. 
+     For example, since the depth sensor of camera does not work well due to the ultravioloet rays, RGB-D SLAM methods cannot be applicable. 
+     In addition, 3D LiDAR is not cost efficient. Therefore, we used one camera and added GPS data as well.
+     Meanwhile, on the road, the optimal route is decided based on time, fuel efficiency, and distance. 
+     On the other hand, on off-road, considering the irregular condition of the path, such as fine sand, mud and gravel, it is important to take into a consideration the condition of the path. 
+     Therefore, even if one path spends more time than the other, it can be decided as a optimal path. 
+     Likewise, SLAM and Path Planning methods which optimizes at the off-road is required. 
 
 📖 *Considerations*
 
@@ -50,7 +56,8 @@
 </p>
 
     
-    This is an overview of system architecture. It consists of hardware, middleware, and software, and collects data through camera and GPS.
+    This is an overview of system architecture. 
+    It consists of hardware, middleware, and software, and collects data through camera and GPS.
 
 <p align="center">
 <img width="608" alt="image" src="https://user-images.githubusercontent.com/53038354/170869449-d4f0c003-6d6f-40da-b7f7-e889dc32b6ba.png">
@@ -64,14 +71,23 @@
        - visual SLAM  
          It consists of three steps: camera tracking, local mapping and loop closing. GPS data was utilized for enhancing the accuracy and lessen the computing time. 
 
-          1. Camera tracking: The new keyframe will be chosen with map points and GPS data. Each new frame is decided as a keyframe only if they have similar map points compared with previous keyframes. In this process, GPS would make it possible to select the keyframe only when the vehicle moves certain distance.   
+          1. Camera tracking: The new keyframe will be chosen with map points and GPS data. 
+          Each new frame is decided as a keyframe only if they have similar map points compared with previous keyframes. 
+          In this process, GPS made it possible to select the keyframe only when the vehicle moves certain distance to prevent bootless computing.   
             
-          2. Local mapping: The new keyframe will be inserted using graph and GPS. The local map is made of graph, and each keyframe is connected with the nearest keyframe as a node. GPS data will be used to find the nearest keyframe with a new keyframe.  
+          2. Local mapping: The new keyframe will be inserted using graph and GPS. 
+          The local map is made of graph, and each keyframe is connected with the nearest keyframe as a node. 
+          GPS data is used to find the nearest keyframe with a new keyframe and utilized when calculating the weight for making the covisibility graph.  
 
-          3. Loop closing: The feature is extracted in each frame using DBoW(bag of words based loop detector) and GPS. In off-road, it might be hard to extract the specific feature for each frame. For this reason we use the GPS for finding loop.  
+          3. Loop closing: In order to find the loop candidates of the current KeyFrame, covisibility graph is called for calculating the similarities. 
+          However, GPS data can complement while detecting the loop and early stops the Loop Closing process if there is no near KeyFrame. 
+  
 
        - Path Planning  
-          A sampling-based path planning method is used. Since it starts path planning from the sampled location, it is added the priority for certain paths, considering geographical features such as slope, trunk, and rocks. A stable path can be marked using GPS coordinates and given more weight. As a result, the vehicle can select more stable paths stochastically.   
+          A sampling-based path planning method is used. 
+          Since it starts path planning from the sampled location, it is added the priority for certain paths, considering geographical features such as slope, trunk, and rocks. 
+          A stable path can be marked using GPS coordinates and given more weight. 
+          As a result, the vehicle can select more stable paths stochastically.   
 
 🖥️ *Environment Setting*
 
