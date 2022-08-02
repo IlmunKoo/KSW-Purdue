@@ -79,6 +79,8 @@
        
         All the systems are controlled by ROS. 
         In case of the robot operation based on keyboard input, 'teleop_twist_keyboard' package has to be run before the main code starts. 
+        
+<p align="center">![ezgif com-gif-maker (3)](https://user-images.githubusercontent.com/52185595/182273700-a99055b7-bd37-46da-a930-796a91164410.gif)</p>
 
     🚜Software  
 
