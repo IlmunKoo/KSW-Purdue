@@ -60,11 +60,25 @@
     It consists of hardware, middleware, and software, and collects data through camera and GPS.
 
 <p align="center">
-<img width="608" alt="image" src="https://user-images.githubusercontent.com/53038354/170869449-d4f0c003-6d6f-40da-b7f7-e889dc32b6ba.png">
+<img width="886" alt="스크린샷 2022-08-01 오후 9 09 11" src="https://user-images.githubusercontent.com/52185595/182270340-b3366554-00d5-4807-a131-ff6af70a1949.png">
 </p>
     
     🚜Hardware    
-       As shown in the left figure, the John Deere’s electrical toy vehicle is remodeled. Two DC motors for progress, one servo motor for steering, wheels, and electrical system were maintained. Then, gearbox and additional frame were added for making stronger power. We made the frames by a 3D printer. These all gears are controlled by an electronic circuit. The figure on the right shows an electronic circuit.
+       As shown in the left figure, the John Deere’s electrical toy vehicle is remodeled. Two DC motors for progress, one servo motor for steering, wheels, and electrical system were maintained. 
+       
+       Then, gearbox and additional frame were added for making stronger power. We made the frames by a 3D printer. 
+       
+       These all gears are controlled by an electronic circuit. The figure on the right shows an electronic circuit.
+       
+       
+        🖥️ *Environment Setting*
+
+            ✔️RoboClaw 2x30A Motor Controller
+            ✔️12V DC motor (3EA)
+            ✔️Roboclaw Driver
+       
+        All the systems are controlled by ROS. 
+        In case of the robot operation based on keyboard input, 'teleop_twist_keyboard' package has to be run before the main code starts. 
 
     🚜Software  
 
