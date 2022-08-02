@@ -168,7 +168,7 @@
        
     👩‍🚀Jiwon Park
        -Kyung Hee University
-       -Major in Electronic Engineering
+       -Major in Software Convergence & Electronic Engineering
        -overflow21@khu.ac.kr
        -https://github.com/zzziito
     
