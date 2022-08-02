@@ -80,6 +80,10 @@
         All the systems are controlled by ROS. 
         In case of the robot operation based on keyboard input, 'teleop_twist_keyboard' package has to be run before the main code starts. 
         
+        🚜 *Package needed*
+        
+         ✔️Roboclaw Driver installation : $ git clone https://github.com/SV-ROS/roboclaw_driver/blob/master/nodes/roboclaw_node.py
+         ✔️teleop_twist_keyboard : sudo apt-get install ros-$ROS-DISTRO-teleop-twist-keyboard
         
         🚜 *Driving system diagram*
         
