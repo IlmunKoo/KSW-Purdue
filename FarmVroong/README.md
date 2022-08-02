@@ -13,15 +13,20 @@
 
      As self-driving cars are commercialized, a lot of data accumulates and technology is rapidly developing as well. 
      Therefore, in on-road environment, the robust performance of autonomous vehicles is already shown.
+
      However, in off-road environment, self driving shows low performance yet. 
      The reason why it does not perform well is that it is hard to build datasets since off-road environments have unstructured class boundaries, uneven terrain, strong textures, and irregular characteristics. 
+
      Moreover, there is no uniform data for off-road experiments due to the various environments, including deserts, forests, and farms. Thus, it is more difficult to recognize the surrounding environments at the off-road than the on-road and is required to determine the scope.
+
      In an unknown environment, an autonomous vehicle must percept the map of its environment and determine its location through Simultaneous Localization and Mapping (SLAM). 
      It is critical that there are some limitations and delimitations of sensor data at the outdoor. 
      For example, since the depth sensor of camera does not work well due to the ultravioloet rays, RGB-D SLAM methods cannot be applicable. 
+
      In addition, 3D LiDAR is not cost efficient. Therefore, we used one camera and added GPS data as well.
      Meanwhile, on the road, the optimal route is decided based on time, fuel efficiency, and distance. 
      On the other hand, on off-road, considering the irregular condition of the path, such as fine sand, mud and gravel, it is important to take into a consideration the condition of the path. 
+
      Therefore, even if one path spends more time than the other, it can be decided as a optimal path. 
      Likewise, SLAM and Path Planning methods which optimizes at the off-road is required. 
 
@@ -64,24 +69,22 @@
 </p>
     
     🚜Hardware    
-       As shown in the left figure, the John Deere’s electrical toy vehicle is remodeled. Two DC motors for progress, one servo motor for steering, wheels, and electrical system were maintained. 
-       
-       Then, gearbox and additional frame were added for making stronger power. We made the frames by a 3D printer. 
-       
+       As shown in the left figure, the John Deere’s electrical toy vehicle is remodeled. Two DC motors for progress, one DC motor for steering, wheels, and electrical system were maintained. 
+              
        These all gears are controlled by an electronic circuit. The figure on the right shows an electronic circuit.
        
-       
-        🚜 *Environment Setting*
-
-            ✔️RoboClaw 2x30A Motor Controller
-            ✔️12V DC motor (3EA)
-            ✔️Roboclaw Driver
+       * Parts *
+        ✔️ John Deere GROUND FORCE
+        ✔️ Jetson NANO 4GB Developer Kit (SUB)
+        ✔️ RoboClaw 2x60A Motor Controller
+        ✔️ RoboClaw 2x15A Motor Controller
+        ✔️ 12V DC motor (3EA)
+        ✔️ 22V Battery
        
         All the systems are controlled by ROS. 
         In case of the robot operation based on keyboard input, 'teleop_twist_keyboard' package has to be run before the main code starts. 
-        
-        
-        🚜 *Driving system diagram*
+
+    🚜 *Driving system diagram*
         
         
 <p align="center"><img src="https://user-images.githubusercontent.com/52185595/182275036-3c873ed2-1956-48cc-95f4-829e0bceab79.png" width="300"></p>
@@ -128,7 +131,7 @@
 
     ✔️GoPro HERO 10 Camera (It includes GPS sensor)
 
-    ✔️Python 3.10.x
+    ✔️Python 2.7.x
   
 
 📤 *Installation*
@@ -136,16 +139,8 @@
 ## Package needed 
 
     ✔️ openCV
-    ✔️ libi2c-dev
-    ✔️ i2cpwm_board
-    ✔️ joy
-    ✔️ ackermann_vehicle
     ✔️ teleop_twist_keyboard
-    ✔️ donkey_car
-    ✔️ map2gazebo
-    ✔️ map_server
-    ✔️ trimesh
-
+    ✔️ Roboclaw Driver (from. https://github.com/SV-ROS/roboclaw_driver/blob/master/nodes/roboclaw_node.py)
 
     $ git clone https://github.com/MINJILEE-PURDUE/KSW_2022_Spring_Program.git
     $ cd FarmVroong
