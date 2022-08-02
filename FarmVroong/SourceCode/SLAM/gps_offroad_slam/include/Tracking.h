@@ -49,7 +49,7 @@ public:
              KeyFrameDatabase* pKFDB, const int sensor, ORBParameters& parameters);
 
     // GPS data add
-    cv::Mat GrabImageRGBD(const cv::Mat &imRGB,const cv::Mat &imD, const double &timestamp, const double &mLatitude, const double &mLongitude);
+    cv::Mat GrabImageMonocular(const cv::Mat &im, const double &timestamp, const double &mLatitude, const double &mLongitude);
 
     void SetLocalMapper(LocalMapping* pLocalMapper);
     void SetLoopClosing(LoopClosing* pLoopClosing);
@@ -113,8 +113,6 @@ protected:
     // Main tracking function. It is independent of the input sensor.
     void Track();
 
-    // Map initialization for stereo and RGB-D
-    void StereoInitialization();
 
     // Map initialization for monocular
     void MonocularInitialization();

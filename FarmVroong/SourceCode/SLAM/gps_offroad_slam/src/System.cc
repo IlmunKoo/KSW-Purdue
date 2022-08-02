@@ -14,8 +14,8 @@ System::System(const string strVocFile, const eSensor sensor, ORBParameters& par
 
     cout << "Input sensor was set to: ";
 
-    if(mSensor==RGBD)
-        cout << "RGB-D" << endl;
+    if(mSensor==MONOCULAR)
+        cout << "Monocular" << endl;
     else
         cout << "wrong sensor" <<endl;
 
@@ -91,12 +91,11 @@ System::System(const string strVocFile, const eSensor sensor, ORBParameters& par
 
 }
 
-// *** latitude, longitdue add ***
-void System::TrackRGBD(const cv::Mat &im, const cv::Mat &depthmap, const double &timestamp, const double &mLatitude, const double &mLongitude)
+void System::TrackMonocular(const cv::Mat &im, const double &timestamp,const double &mLatitude, const double &mLongitude)
 {
-    if(mSensor!=RGBD)
+    if(mSensor!=MONOCULAR)
     {
-        cerr << "ERROR: Called TrackRGBD but input sensor was not set to RGBD." << endl;
+        cerr << "ERROR: you called TrackMonocular but input sensor was not set to Monocular." << endl;
         exit(-1);
     }
 
@@ -134,8 +133,7 @@ void System::TrackRGBD(const cv::Mat &im, const cv::Mat &depthmap, const double 
     }
     }
 
-    // *** gps data add ***
-    cv::Mat Tcw = mpTracker->GrabImageRGBD(im,depthmap,timestamp,mLatitude,mLongitude);
+    cv::Mat Tcw = mpTracker->GrabImageMonocular(im,timestamp,mLatitude,mLongitude);
 
     unique_lock<mutex> lock2(mMutexState);
     mTrackingState = mpTracker->mState;

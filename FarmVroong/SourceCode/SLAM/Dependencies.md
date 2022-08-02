@@ -4,7 +4,7 @@
 In this document we list all the pieces of code included  by ORB-SLAM2 and linked libraries which are not property of the authors of ORB-SLAM2.
 
 
-#####Code in **orb_slam2** **src** and **include** folders
+#####Code in **gps_offroad_slam** **src** and **include** folders
 
 * *ORBextractor.cc*.
 This is a modified version of orb.cpp of OpenCV library. The original code is BSD licensed.

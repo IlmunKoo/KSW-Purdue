@@ -39,7 +39,7 @@ Frame::Frame(const Frame &frame)
 
 
 // Frame Constructor
-Frame::Frame(const cv::Mat &imGray, const cv::Mat &imDepth, const double &timeStamp, ORBextractor* extractor,ORBVocabulary* voc, cv::Mat &K, cv::Mat &distCoef, const float &bf, const float &thDepth,const double &mCurrentLatitude, const double &mCurrentLongitude)
+Frame::Frame(const cv::Mat &imGray, const double &timeStamp, ORBextractor* extractor, ORBVocabulary* voc, cv::Mat &K, cv::Mat &distCoef, const float &bf, const float &thDepth,const double &mCurrentLatitude, const double &mCurrentLongitude)
     :mpORBvocabulary(voc), mpORBextractorLeft(extractor), mpORBextractorRight(static_cast<ORBextractor*>(NULL)),
      mTimeStamp(timeStamp), mK(K.clone()), mDistCoef(distCoef.clone()), mbf(bf), mThDepth(thDepth)
 {
@@ -48,7 +48,7 @@ Frame::Frame(const cv::Mat &imGray, const cv::Mat &imDepth, const double &timeSt
 
     // Scale Level Info
     mnScaleLevels = mpORBextractorLeft->GetLevels();
-    mfScaleFactor = mpORBextractorLeft->GetScaleFactor();    
+    mfScaleFactor = mpORBextractorLeft->GetScaleFactor();
     mfLogScaleFactor = log(mfScaleFactor);
     mvScaleFactors = mpORBextractorLeft->GetScaleFactors();
     mvInvScaleFactors = mpORBextractorLeft->GetInverseScaleFactors();
@@ -65,7 +65,9 @@ Frame::Frame(const cv::Mat &imGray, const cv::Mat &imDepth, const double &timeSt
 
     UndistortKeyPoints();
 
-    ComputeStereoFromRGBD(imDepth);
+    // Set no stereo information
+    mvuRight = vector<float>(N,-1);
+    mvDepth = vector<float>(N,-1);
 
     mvpMapPoints = vector<MapPoint*>(N,static_cast<MapPoint*>(NULL));
     mvbOutlier = vector<bool>(N,false);
@@ -552,6 +554,22 @@ cv::Mat Frame::UnprojectStereo(const int &i)
     }
     else
         return cv::Mat();
+}
+
+double Frame::GetDistanceWithGPS(const std::pair<double, double> &mGPS)
+{
+    double mkLatitude = mfGPS.first;
+    double mkLongitude = mfGPS.second;
+    double flatitude = mGPS.first;
+    double flongitude = mGPS.second;
+    std::cout<<"frame  latitude: "<<mkLatitude<<"longitude: "<<mkLongitude<<std::endl;
+    double R = 6378.137; // Radius of earth in KM
+    double dLatitude = (mkLatitude-flatitude) * M_PI / 180;
+    double dLongitude = (mkLongitude-flongitude) * M_PI  / 180;
+    double a = std::pow(sin(dLatitude/2),2) + cos(flatitude * M_PI / 180) * cos(mkLatitude * M_PI / 180) * std::pow(sin(dLongitude/2),2);
+    double c = 2 * atan2(sqrt(a), sqrt(1-a));
+    double distance = R * c;
+    return distance*1000; // meters
 }
 
 } //namespace GPS_OFF_SLAM

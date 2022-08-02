@@ -29,8 +29,8 @@ public:
     // Copy constructor.
     Frame(const Frame &frame);
 
-    // Add GPS data. Constructor for RGB-D cameras.
-    Frame(const cv::Mat &imGray, const cv::Mat &imDepthconst, const double &timeStamp, ORBextractor* extractor, ORBVocabulary* voc, cv::Mat &K, cv::Mat &distCoef, const float &bf, const float &thDepth, const double &mCurrentLatitude, const double &mCurrentLongitude);
+    // Constructor for Monocular cameras.
+    Frame(const cv::Mat &imGray, const double &timeStamp, ORBextractor* extractor,ORBVocabulary* voc, cv::Mat &K, cv::Mat &distCoef, const float &bf, const float &thDepth,const double &mCurrentLatitude, const double &mCurrentLongitude);
 
     // Extract ORB on the image. 0 for left image and 1 for right image.
     void ExtractORB(int flag, const cv::Mat &im);
@@ -74,6 +74,9 @@ public:
 
     // Backprojects a keypoint (if stereo/depth info available) into 3D world coordinates.
     cv::Mat UnprojectStereo(const int &i);
+
+    // *** OURS get distance data***
+    double GetDistanceWithGPS(const std::pair<double, double> &mGPS);
 
 public:
     // Vocabulary used for relocalization.

@@ -128,17 +128,18 @@ if (NOT BOOST_SERIALIZATION)
 endif()
 target_link_libraries(${PROJECT_NAME} ${BOOST_SERIALIZATION})
 
-add_executable (${PROJECT_NAME}_rgbd
-ros/src/RGBDNode.cc
+add_executable (${PROJECT_NAME}_mono
+ros/src/MonoNode.cc
 ros/src/Node.cc
 )
-add_dependencies (${PROJECT_NAME}_rgbd ${PROJECT_NAME} ${PROJECT_NAME}_gencfg)
+add_dependencies (${PROJECT_NAME}_mono ${PROJECT_NAME} ${PROJECT_NAME}_gencfg)
 
-target_link_libraries(${PROJECT_NAME}_rgbd
+target_link_libraries(${PROJECT_NAME}_mono
 ${LIBS_ROS}
 )
 
-install(TARGETS ${PROJECT_NAME}_rgbd
+
+install(TARGETS ${PROJECT_NAME}_mono 
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -165,3 +166,4 @@ install(DIRECTORY gps_offroad_slam/config/
 install(DIRECTORY gps_offroad_slam/Vocabulary/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/gps_offroad_slam/Vocabulary
 )
+

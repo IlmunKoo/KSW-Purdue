@@ -321,6 +321,13 @@ void KeyFrame::UpdateConnections()
         {
             if(mit->first->mnId==mnId)
                 continue;
+            if(!KFcounterD.count(mit->first))
+            {
+                pair<double, double> kGPS= mit->first->GetGPSData();
+                double distance = mkGPS->GetDistanceWithGPS(kGPS.first, kGPS.second);
+                KFcounterD[mit->first]=distance;
+            }
+                
             KFcounter[mit->first]++;
         }
     }
@@ -410,7 +417,13 @@ void KeyFrame::UpdateConnections()
 int KeyFrame::MakeFinalWeight(int weight, const std::pair<double, double> &mGPS)
 {
     double distance = GetDistanceWithGPS(mGPS);
-    int finalWeight = (int)(weight-0.1*distance);
+    std::cout<<"distance: "<<distance<<std::endl;
+    static const double inv_sqrt_2pi = 0.3989422804014327;
+    double a = distance / 0.2;
+    int dWeight = 10 * inv_sqrt_2pi / 0.5 * std::exp(-0.5 * a * a);
+    std::cout<<"dweight: "<<dWeight<<std::endl;
+    int finalWeight = weight+dWeight;
+    std::cout<<"final weight: "<<finalWeight<<std::endl;
 
     return finalWeight;
 }
@@ -756,6 +769,8 @@ void KeyFrame::serialize(Archive &ar, const unsigned int version)
     ar & const_cast<int &>(mnMinX) & const_cast<int &>(mnMinY) & const_cast<int &>(mnMaxX) & const_cast<int &>(mnMaxY);
     ar & const_cast<cv::Mat &>(mK);
     // GPS update.
+    ar& mkGPS;
+
     ar& mkGPS;
 
     // mutex needed vars, but don't lock mutex in the save/load procedure

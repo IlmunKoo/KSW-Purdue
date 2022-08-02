@@ -47,17 +47,17 @@ void Node::Init () {
   tfBuffer.reset(new tf2_ros::Buffer);
   tfListener.reset(new tf2_ros::TransformListener(*tfBuffer));
 
-  rendered_image_publisher_ = image_transport_.advertise (name_of_node_+"/debug_image", 1);
+  rendered_image_publisher_ = image_transport_.advertise (name_of_node_+"/debug_image", 10);
   if (publish_pointcloud_param_) {
-    map_points_publisher_ = node_handle_.advertise<sensor_msgs::PointCloud2> (name_of_node_+"/map_points", 1);
+    map_points_publisher_ = node_handle_.advertise<sensor_msgs::PointCloud2> (name_of_node_+"/map_points", 10);
   }
 
   // Enable publishing camera's pose as PoseStamped message
   if (publish_pose_param_) {
-    pose_publisher_ = node_handle_.advertise<geometry_msgs::PoseStamped> (name_of_node_+"/pose", 1);
+    pose_publisher_ = node_handle_.advertise<geometry_msgs::PoseStamped> (name_of_node_+"/pose", 10);
   }
 
-  status_gba_publisher_ = node_handle_.advertise<std_msgs::Bool> (name_of_node_+"/gba_running", 1);
+  status_gba_publisher_ = node_handle_.advertise<std_msgs::Bool> (name_of_node_+"/gba_running", 10);
   
 }
 
@@ -257,15 +257,17 @@ void Node::LoadOrbParameters (GPS_OFF_SLAM::ORBParameters& parameters) {
   node_handle_.param(name_of_node_ + "/ORBextractor/iniThFAST", parameters.iniThFAST, 20);
   node_handle_.param(name_of_node_ + "/ORBextractor/minThFAST", parameters.minThFAST, 7);
 
-  bool load_calibration_from_cam = false;
-  node_handle_.param(name_of_node_ + "/load_calibration_from_cam", load_calibration_from_cam, false);
+  // 여기 고침
+  bool load_calibration_from_cam = true;
+  node_handle_.param(name_of_node_ + "/load_calibration_from_cam", load_calibration_from_cam, true);
 
   if (sensor_==GPS_OFF_SLAM::System::RGBD) {
     node_handle_.param(name_of_node_ + "/ThDepth", parameters.thDepth, static_cast<float>(35.0));
     node_handle_.param(name_of_node_ + "/depth_map_factor", parameters.depthMapFactor, static_cast<float>(1.0));
   }
-
+  //여기도 고침
   if (load_calibration_from_cam) {
+    // ROS_INFO_STREAM ("Listening for camera info on topic " << node_handle_.resolveName(camera_info_topic_));
     ROS_INFO_STREAM ("Listening for camera info on topic " << node_handle_.resolveName(camera_info_topic_));
     sensor_msgs::CameraInfo::ConstPtr camera_info = ros::topic::waitForMessage<sensor_msgs::CameraInfo>(camera_info_topic_, ros::Duration(1000.0));
     if(camera_info == nullptr){

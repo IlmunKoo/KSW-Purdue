@@ -1,5 +1,5 @@
-# GPS Offroad SLAM
-SLAM for the offroad environment using GPS data. The code is based on the ORB-SLAM2.
+# GPS MONOCULAR SLAM FOR MOBILE ROBOT
+MONOCULAR SLAM for the OUTDOOR environment using GPS data. The code is based on the ORB-SLAM2.
 
 
 ## Based on ORB-SLAM2
@@ -11,8 +11,8 @@ The original implementation can be found [here](https://github.com/raulmur/ORB_S
 - Supports a lot of cameras out of the box, such as the Intel RealSense family. See the run section for a list
 - Data I/O via ROS topics
 - Parameters can be set with the rqt_reconfigure gui during runtime
+- Very quick startup through considerably sped up vocab file loading
 - Loading of all parameters via launch file
-- Supports loading cam parameters from cam_info topic
 
 ### Related Publications:
 [Monocular] Raúl Mur-Artal, J. M. M. Montiel and Juan D. Tardós. **ORB-SLAM: A Versatile and Accurate Monocular SLAM System**. *IEEE Transactions on Robotics,* vol. 31, no. 5, pp. 1147-1163, 2015. (**2015 IEEE Transactions on Robotics Best Paper Award**). **[PDF](http://webdiis.unizar.es/~raulmur/MurMontielTardosTRO15.pdf)**.
@@ -54,7 +54,7 @@ sudo apt install libeigen3-dev
 ## Building
 To build the node run
 ```
-catkin_make
+catkin build
 ```
 in your catkin folder.
 
@@ -86,9 +86,7 @@ The static parameters:
 
 ### Subscribed topics
 
-- **/camera/rgb/image_raw** for the RGB image
-- **/camera/depth_registered/image_raw** for the depth information
-- **/camera/rgb/camera_info** for camera calibration (if `load_calibration_from_cam`) is `true`
+- **/camera/image_raw** for the RGB image
 
 
 # 3. Run
@@ -96,15 +94,15 @@ After sourcing your setup bash using
 ```
 source devel/setup.bash
 ```
-## Suported cameras
+## Run the SLAM node and Publish the image and GPS data
 
-Intel RealSense d435I 
+Image and the GPS data is collected using GoPro Hero 10.
 ``` 
-roslaunch gps_offroad_slam gps_slam_d435I_rgbd.launch 
+roslaunch gps_offroad_slam gps_slam_d435I_mono.launch 
 ```
-
+Publish the data using the .bag file.
 ```
-roslaunch realsense2_camera realsense2_camera.launch
+rosbag play --clock outdoorvideo.bag
 ```
 
 **Note** you need to source your catkin workspace in your terminal in order for the services to become available.

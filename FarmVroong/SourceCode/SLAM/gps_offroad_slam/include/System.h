@@ -43,12 +43,10 @@ public:
     System(const string strVocFile, const eSensor sensor, ORBParameters& parameters,
            const std::string & map_file = "", bool load_map = false); // map serialization addition
 
-    // Process the given rgbd frame. Depthmap must be registered to the RGB frame.
-    // Input image: RGB (CV_8UC3) or grayscale (CV_8U). RGB is converted to grayscale.
-    // Input depthmap: Float (CV_32F).
+    // Process the given monocular frame
+    // Input images: RGB (CV_8UC3) or grayscale (CV_8U). RGB is converted to grayscale.
     // Returns the camera pose (empty if tracking fails).
-    // *** Add latitude, longitdue ***
-    void TrackRGBD(const cv::Mat &im, const cv::Mat &depthmap, const double &timestamp, const double &mLatitude, const double &mLongitude);
+    void TrackMonocular(const cv::Mat &im, const double &timestamp,const double &mLatitude, const double &mLongitude);
     
     // Returns true if there have been a big map change (loop closure, global BA)
     // since last call to this function
