@@ -71,7 +71,7 @@
        These all gears are controlled by an electronic circuit. The figure on the right shows an electronic circuit.
        
        
-        🖥️ *Environment Setting*
+        🚜 *Environment Setting*
 
             ✔️RoboClaw 2x30A Motor Controller
             ✔️12V DC motor (3EA)
@@ -80,7 +80,20 @@
         All the systems are controlled by ROS. 
         In case of the robot operation based on keyboard input, 'teleop_twist_keyboard' package has to be run before the main code starts. 
         
-<p align="center">![ezgif com-gif-maker (3)](https://user-images.githubusercontent.com/52185595/182273700-a99055b7-bd37-46da-a930-796a91164410.gif)</p>
+        
+        🚜 *Driving system diagram*
+        
+        
+<p align="center"><img src="https://user-images.githubusercontent.com/52185595/182275036-3c873ed2-1956-48cc-95f4-829e0bceab79.png" width="300"></p>
+
+        
+        🚜 *Prototype Video : Mobile robot running by Joystick*
+        
+<p align="center"><img src="https://user-images.githubusercontent.com/52185595/182276119-696ce968-8ce6-4e08-9efb-a36b48b7205f.gif"/></p>
+
+        🚜 *Prototype Video 2 : Steering wheel operating*
+
+<p align="center"><img src="https://user-images.githubusercontent.com/52185595/182273700-a99055b7-bd37-46da-a930-796a91164410.gif"/></p>
 
     🚜Software  
 
