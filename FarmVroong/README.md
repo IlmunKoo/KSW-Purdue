@@ -3,7 +3,7 @@
 
 📑 *Project Title*
         
-    RGB-D SLAM and Path Planning for Stable Off-road Autonomous Driving using RGB-D camera and GPS
+    Off-road SLAM and Path Planning with GPS for Stable Off-road Autonomous Driving
 
 📅 *Project Period*
 
@@ -11,60 +11,112 @@
 
 🧖🏻‍♀️ *Problem Statement*
 
-    As self-driving cars are commercialized, a lot of data is accumulated, and accordingly, technology is rapidly developing. This shows the robust performance of autonomous vehicles in on-road environments, however, it shows low performance in off-road environments. This is because it is hard to build datasets because off-road environments have unstructured class boundaries, uneven terrain, strong textures, and irregular characteristics. Moreover, data cannot be shared between different types of environments, such as deserts, forests, and farms. Therefore, it is difficult to recognize the surrounding environments that you have never been to.
-
-    In an unknown environment, an autonomous vehicle must know the map of its environment and determine its location through SLAM(Simultaneous Localization and Mapping). SLAM does not operate normally because it is difficult to recognize the surroundings on off-road. Therefore, the environment should be accurately recognized and appropriate keyframes be extracted using the data collected by the sensor. 
-    
-    In addition, on the road, the optimal route is selected based on time, fuel efficiency, and distance, but off-road, depending on the condition of the path, such as fine sand, mud and gravel, it is not flat and has an irregular slope. Therefore, even if more time is spent on off-road, it is judged that a special path planning method using additional information is more appropriate to select a stable path.
-
-    In conclusion, it is required that special SLAM and path planning methods are optimized off-road.
+     As self-driving cars are commercialized, a lot of data accumulates and technology is rapidly developing as well. 
+     Therefore, in on-road environment, the robust performance of autonomous vehicles is already shown.
+     However, in off-road environment, self driving shows low performance yet. 
+     The reason why it does not perform well is that it is hard to build datasets since off-road environments have unstructured class boundaries, uneven terrain, strong textures, and irregular characteristics. 
+     Moreover, there is no uniform data for off-road experiments due to the various environments, including deserts, forests, and farms. Thus, it is more difficult to recognize the surrounding environments at the off-road than the on-road and is required to determine the scope.
+     In an unknown environment, an autonomous vehicle must percept the map of its environment and determine its location through Simultaneous Localization and Mapping (SLAM). 
+     It is critical that there are some limitations and delimitations of sensor data at the outdoor. 
+     For example, since the depth sensor of camera does not work well due to the ultravioloet rays, RGB-D SLAM methods cannot be applicable. 
+     In addition, 3D LiDAR is not cost efficient. Therefore, we used one camera and added GPS data as well.
+     Meanwhile, on the road, the optimal route is decided based on time, fuel efficiency, and distance. 
+     On the other hand, on off-road, considering the irregular condition of the path, such as fine sand, mud and gravel, it is important to take into a consideration the condition of the path. 
+     Therefore, even if one path spends more time than the other, it can be decided as a optimal path. 
+     Likewise, SLAM and Path Planning methods which optimizes at the off-road is required. 
 
 📖 *Considerations*
 
     🚜Software
-      - Manage processes that allow multiple processes to operate simultaneously and in real time.
-      - Stable error handling in case of malfunction for safety.
+      - Manage processes that make multiple process to operate simultaneously and in real time.
+      - Error handling in case of malfunction for safety.
     
     🚜Hardware
-      - Robust frame for driving in rugged terrain.
+      - Robust frame for driving in bumpy terrain.
       - Independent vehicles platform without network connectivity.
       - Heat dissipation to withstand high temperatures and direct rays of the sun.
 
 💡 *Novelty*
 
-    1. Develop RGB-D SLAM using RGB-D Camera with GPS.
-       => The existing SLAM method is on a Camera or LiDAR basis. However, we use RGB-D cameras and GPS data together to achieve robust performance in off-road environments. 
+    1. Developed visual SLAM using monocular camera and GPS.
+       => SLAM method is usually based on a Camera or 3D-LiDAR. 
+       This research used camera, which is much cheaper than 3D-LiDAR, and utilized the advantage of GPS sensor that performs well at the open outdoor. 
+       Most of all, GPS data prevented bootless computing, contributed to making Covisibility Graph, and localized the position of the vehicle when the
+       tracking failed.  
       
-    2. Develop Path planning considering path conditions to improve driving quality.
-       => Existing path planning methods are estimated based on the shortest path. However, the vehicle can search stable paths using additional information on the characteristics of the road. The additional information includes the priority for certain paths, considering geographical features such as slope, trunk, and rocks. A stable path can be marked using GPS coordinates and given more weight. As a result, the vehicle can select more stable paths stochastically. 
+    2. Developed Path planning considering path conditions to improve driving quality.
+       => Path Planning methods are fundamentally estimated based on the shortest path. 
+       However, when it comes to off-road, Path Planning should consider not only the time but also the stability of the road. 
+       In order to achieve the goal, geographical features such as slope, trunk, and rocks is required and used for calculating the priority of the path. 
+       A stable path can be marked using GPS coordinates and given more weight. Thus, the vehicle can select more stable paths stochastically. 
 
 🏛 *System Overview*
  <p align="center">
-<img width="424" alt="image" src="https://user-images.githubusercontent.com/53038354/170869198-8e1b3fe9-45b0-4cf2-b9ed-6c7433c0f1f3.png">
+<img width="600" alt="스크린샷 2022-08-01 오후 3 16 23" src="https://user-images.githubusercontent.com/66895650/182228554-3b9fa7dc-c5ee-4ffb-8b8d-52470c84d6c0.png">
 </p>
+
     
-    This is an overview of system architecture. It consists of hardware, middleware, and software, and collects data through RGB-D camera, GPS and IMU.
+    This is an overview of system architecture. 
+    It consists of hardware, middleware, and software, and collects data through camera and GPS.
 
 <p align="center">
-<img width="608" alt="image" src="https://user-images.githubusercontent.com/53038354/170869449-d4f0c003-6d6f-40da-b7f7-e889dc32b6ba.png">
+<img width="886" alt="스크린샷 2022-08-01 오후 9 09 11" src="https://user-images.githubusercontent.com/52185595/182270340-b3366554-00d5-4807-a131-ff6af70a1949.png">
 </p>
     
     🚜Hardware    
-       As shown in the left figure, the Johndeere’s electrical toy vehicle is remodeled. Two DC motors for progress, one servo motor for steering, wheels, and electrical system were maintained. Then, gearbox and additional frame were added for making stronger power. We made the frames by a 3D printer. These all gears are controlled by an electronic circuit. The figure on the right shows an electronic circuit.
+       As shown in the left figure, the John Deere’s electrical toy vehicle is remodeled. Two DC motors for progress, one servo motor for steering, wheels, and electrical system were maintained. 
+       
+       Then, gearbox and additional frame were added for making stronger power. We made the frames by a 3D printer. 
+       
+       These all gears are controlled by an electronic circuit. The figure on the right shows an electronic circuit.
+       
+       
+        🚜 *Environment Setting*
+
+            ✔️RoboClaw 2x30A Motor Controller
+            ✔️12V DC motor (3EA)
+            ✔️Roboclaw Driver
+       
+        All the systems are controlled by ROS. 
+        In case of the robot operation based on keyboard input, 'teleop_twist_keyboard' package has to be run before the main code starts. 
+        
+        
+        🚜 *Driving system diagram*
+        
+        
+<p align="center"><img src="https://user-images.githubusercontent.com/52185595/182275036-3c873ed2-1956-48cc-95f4-829e0bceab79.png" width="300"></p>
+
+        
+        🚜 *Prototype Video : Mobile robot running by Joystick*
+        
+<p align="center"><img src="https://user-images.githubusercontent.com/52185595/182276119-696ce968-8ce6-4e08-9efb-a36b48b7205f.gif"/></p>
+
+        🚜 *Prototype Video 2 : Steering wheel operating*
+
+<p align="center"><img src="https://user-images.githubusercontent.com/52185595/182273700-a99055b7-bd37-46da-a930-796a91164410.gif"/></p>
 
     🚜Software  
 
-       - RGB-D SLAM  
-         It consists of three steps, camera tracking, local mapping and loop closing. GPS data was additionally used for existing RGB-D SLAM.
+       - visual SLAM  
+         It consists of three steps: camera tracking, local mapping and loop closing. GPS data was utilized for enhancing the accuracy and lessen the computing time. 
 
-          1. Camera tracking: The new keyframe will be chosen with map points and GPS data. Each new frame is decided as a keyframe only if they have similar map points compared with previous keyframes. In this process, GPS would make it possible to select the keyframe only when the vehicle moves certain distance.   
+          1. Camera tracking: The new keyframe will be chosen with map points and GPS data. 
+          Each new frame is decided as a keyframe only if they have similar map points compared with previous keyframes. 
+          In this process, GPS made it possible to select the keyframe only when the vehicle moves certain distance to prevent bootless computing.   
             
-          2. Local mapping: The new keyframe will be inserted using graph and GPS. The local map is made of graph, and each keyframe is connected with the nearest keyframe as a node. GPS data will be used to find the nearest keyframe with a new keyframe.  
+          2. Local mapping: The new keyframe will be inserted using graph and GPS. 
+          The local map is made of graph, and each keyframe is connected with the nearest keyframe as a node. 
+          GPS data is used to find the nearest keyframe with a new keyframe and utilized when calculating the weight for making the covisibility graph.  
 
-          3. Loop closing: The feature is extracted in each frame using DBoW(bag of words based loop detector) and GPS. In off-road, it might be hard to extract the specific feature for each frame. For this reason we use the GPS for finding loop.  
+          3. Loop closing: In order to find the loop candidates of the current KeyFrame, covisibility graph is called for calculating the similarities. 
+          However, GPS data can complement while detecting the loop and early stops the Loop Closing process if there is no near KeyFrame. 
+  
 
        - Path Planning  
-          A sampling-based path planning method is used. Since it starts path planning from the sampled location, it is added the priority for certain paths, considering geographical features such as slope, trunk, and rocks. A stable path can be marked using GPS coordinates and given more weight. As a result, the vehicle can select more stable paths stochastically.   
+          A sampling-based path planning method is used. 
+          Since it starts path planning from the sampled location, it is added the priority for certain paths, considering geographical features such as slope, trunk, and rocks. 
+          A stable path can be marked using GPS coordinates and given more weight. 
+          As a result, the vehicle can select more stable paths stochastically.   
 
 🖥️ *Environment Setting*
 
@@ -74,9 +126,7 @@
 
     ✔️ROS Melodic Morenia
 
-    ✔️Intel RealSense Depth Camera D435i
-
-    ✔️GPS BU-353S4
+    ✔️GoPro HERO 10 Camera (It includes GPS sensor)
 
     ✔️Python 3.10.x
   
@@ -85,8 +135,7 @@
 
 ## Package needed 
 
-    ✔️ gps_umd 
-    ✔️ gpsd
+    ✔️ openCV
     ✔️ libi2c-dev
     ✔️ i2cpwm_board
     ✔️ joy
@@ -118,8 +167,8 @@
       
     👨🏻‍🦱Jiwoong Choi
        -Kyung Hee University
-       -Major in Software convergence & Economics
-       -jwtiger22@khu.ac.kr
+       -Major in Software Convergence & Economics
+       -jiwung22@gmail.com
        -https://github.com/Jamalun
        
     👩‍🚀Jiwon Park
