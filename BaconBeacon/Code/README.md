@@ -7,3 +7,5 @@
 **Embedded - Raspberry Pi Development**
 
 **Server - Server development**
+
+**Machine Learning - Machine Learning (DNN)**
