@@ -401,12 +401,6 @@ namespace ompl
                 return state_;
             }
 
-            /** \brief Returns a pointer to the contained state (used for Python bindings) */
-            StateType *operator()() const
-            {
-                return state_;
-            }
-
         private:
             StateSpacePtr space_;
             StateSamplerPtr sampler_;

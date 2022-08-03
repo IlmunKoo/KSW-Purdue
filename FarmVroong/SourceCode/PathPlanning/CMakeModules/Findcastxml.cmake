@@ -12,10 +12,6 @@ if (CASTXML)
     else()
         if(CMAKE_CXX_COMPILER_ID MATCHES "^(Apple)?Clang$")
             set(CASTXMLCOMPILER "clang++")
-        else()
-            if (MSVC)
-                set(CASTXMLCOMPILER "msvc8")
-            endif()
         endif()
     endif()
 
@@ -36,12 +32,10 @@ compiler_path=${CASTXMLCOMPILER_PATH}
     set(_candidate_include_path
         "${OMPL_INCLUDE_DIRS}"
         "${OMPLAPP_INCLUDE_DIRS}"
-        "${PYTHON_INCLUDE_DIRS}"
         "${Boost_INCLUDE_DIR}"
         "${ASSIMP_INCLUDE_DIRS}"
         "${EIGEN3_INCLUDE_DIR}"
-        "${CMAKE_SOURCE_DIR}/py-bindings"
-        "${CMAKE_SOURCE_DIR}/ompl/py-bindings")
+
     if(MINGW)
         execute_process(COMMAND "${CMAKE_CXX_COMPILER}" "-dumpversion"
             OUTPUT_VARIABLE _version OUTPUT_STRIP_TRAILING_WHITESPACE)

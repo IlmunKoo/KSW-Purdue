@@ -7,4 +7,4 @@ install(DIRECTORY ompl/ DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/ompl"
     PATTERN "sample_contrib" EXCLUDE
     REGEX "/src$" EXCLUDE
     REGEX "/doc$" EXCLUDE
-    REGEX "/tests$" EXCLUDE)
+    REGEX "/resources$" EXCLUDE)

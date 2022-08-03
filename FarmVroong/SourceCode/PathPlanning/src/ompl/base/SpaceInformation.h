@@ -53,6 +53,9 @@
 #include <vector>
 #include <iostream>
 
+#include "ompl/util/PPM.h"
+
+
 /** \brief Main namespace. Contains everything in this library */
 namespace ompl
 {
@@ -252,6 +255,10 @@ namespace ompl
             {
                 return stateSpace_->getMeasure();
             }
+
+            void setSpacePPM(const ompl::PPM &ppm);
+
+            ompl::PPM getSpacePPM() const; 
 
             /** @name State memory management
                 @{ */
@@ -465,6 +472,9 @@ namespace ompl
             bool isSetup() const;
 
         protected:
+
+            ompl::PPM ppm_;
+            
             /** \brief Set default motion validator for the state space */
             void setDefaultMotionValidator();
 

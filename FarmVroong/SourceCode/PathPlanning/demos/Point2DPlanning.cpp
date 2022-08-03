@@ -36,9 +36,7 @@
 
 #include <ompl/base/spaces/RealVectorStateSpace.h>
 #include <ompl/geometric/SimpleSetup.h>
-#include <ompl/geometric/planners/rrt/RRTstar.h>
-#include <ompl/geometric/planners/rrt/RRTConnect.h>
-#include <ompl/geometric/planners/prm/PRMstar.h>
+#include <ompl/geometric/planners/BITstar.h>
 
 #include <ompl/util/PPM.h>
 #include <ompl/base/samplers/DeterministicStateSampler.h>
@@ -86,7 +84,7 @@ public:
             if (useDeterministicSampling_)
             {
                 // PRMstar can use the deterministic sampling
-                ss_->setPlanner(std::make_shared<og::PRMstar>(ss_->getSpaceInformation()));
+                ss_->setPlanner(std::make_shared<og::BITstar>(ss_->getSpaceInformation()));
                 space->setStateSamplerAllocator(std::bind(&Plane2DEnvironment::allocateHaltonStateSamplerRealVector,
                                                           this, std::placeholders::_1, 2,
                                                           std::vector<unsigned int>{2, 3}));
@@ -164,7 +162,7 @@ private:
         const int h = std::min((int)state->as<ob::RealVectorStateSpace::StateType>()->values[1], maxHeight_);
 
         const ompl::PPM::Color &c = ppm_.getPixel(h, w);
-        return c.red > 127 && c.green > 127 && c.blue > 127;
+        return true;
     }
 
     ob::StateSamplerPtr allocateHaltonStateSamplerRealVector(const ompl::base::StateSpace *space, unsigned int dim,
@@ -193,12 +191,14 @@ int main(int /*argc*/, char ** /*argv*/)
 
     boost::filesystem::path path(TEST_RESOURCES_DIR);
     bool useDeterministicSampling = true;
-    Plane2DEnvironment env((path / "ppm/floor.ppm").string().c_str(), useDeterministicSampling);
+    const char *filename = "pmu_route.ppm";
+    Plane2DEnvironment env(( path / filename).string().c_str(), useDeterministicSampling);
 
-    if (env.plan(0, 0, 777, 1265))
+    if (env.plan(1295,550 ,325, 975))
     {
         env.recordSolution();
-        env.save("result_demo.ppm");
+        env.save((path / "result_pmu_route1_ori.ppm" ).string().c_str());
+
     }
 
     return 0;

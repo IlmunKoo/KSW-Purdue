@@ -47,6 +47,8 @@
 #include "ompl/util/Exception.h"
 #include "ompl/util/Time.h"
 
+#include "ompl/util/PPM.h"
+
 ompl::base::SpaceInformation::SpaceInformation(StateSpacePtr space) : stateSpace_(std::move(space)), setup_(false)
 {
     if (!stateSpace_)
@@ -196,6 +198,16 @@ bool ompl::base::SpaceInformation::searchValidNearby(State *state, const State *
         uvss->setNrAttempts(attempts);
         return searchValidNearby(uvss, state, near, distance);
     }
+}
+
+void ompl::base::SpaceInformation::setSpacePPM(const ompl::PPM &ppm)
+{
+    ppm_=ppm;
+}
+
+ompl::PPM ompl::base::SpaceInformation::getSpacePPM() const
+{
+    return ppm_;
 }
 
 unsigned int ompl::base::SpaceInformation::getMotionStates(const State *s1, const State *s2,

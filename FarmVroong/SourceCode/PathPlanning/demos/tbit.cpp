@@ -7,7 +7,7 @@
 #include <ompl/base/objectives/StateCostIntegralObjective.h>
 
 // The supported optimal planners, in alphabetical order
-#include <ompl/geometric/planners/informedtrees/BITstar.h>
+#include <ompl/geometric/planners/BITstar.h>
 #include "ompl/geometric/PathGeometric.h"
 
 // For boost program options
@@ -32,67 +32,61 @@ class ValidityChecker : public ob::StateValidityChecker
 public:
     ValidityChecker(const ob::SpaceInformationPtr& si_) :
         ob::StateValidityChecker(si_) {
-            //test.warn("warn");
         }
 
-    // Returns whether the given state's position overlaps the
-    // circular obstacle
     bool isValid(const ob::State* state) const override
     {
-        const int w = std::min((int)state->as<ob::RealVectorStateSpace::StateType>()->values[0], maxWidth_);
-        const int h = std::min((int)state->as<ob::RealVectorStateSpace::StateType>()->values[1], maxHeight_);
+        try
+        {
+            const int w = (int)state->as<ob::RealVectorStateSpace::StateType>()->values[0];
+            const int h = (int)state->as<ob::RealVectorStateSpace::StateType>()->values[1];
 
-        const ompl::PPM::Color &c = ppm_.getPixel(h, w);
-        
-        return c.red > 127 && c.green > 127 && c.blue > 127;        return this->clearance(state) > 0.0;
+            const ompl::PPM ppm = si_->getSpacePPM();
+
+            const ompl::PPM::Color &c = ppm.getPixel(h,w);
+            
+            return c.red > 127 && c.green > 127 && c.blue > 127;
+        }
+        catch(const std::exception& e)
+        {
+            OMPL_ERROR(e.what());
+            OMPL_ERROR("is catched in isValid");
+
+        }
+        return false;
     }
 
     // Returns the distance from the given state's position to the
     // boundary of the circular obstacle.
     double clearance(const ob::State* state) const override
-    {
-        //test.warn("warn");
-        // We know we're working with a RealVectorStateSpace in this
-        // example, so we downcast state into the specific type.
-        const auto* state2D =
-            state->as<ob::RealVectorStateSpace::StateType>();
+    {        
+        try
+        {
+            // We know we're working with a RealVectorStateSpace in this
+            // example, so we downcast state into the specific type.
+            const auto* state2D =
+                state->as<ob::RealVectorStateSpace::StateType>();
 
-        // Extract the robot's (x,y) position from its state
-        double x = state2D->values[0];
-        double y = state2D->values[1];
+            // Extract the robot's (x,y) position from its state
+            double x = state2D->values[0];
+            double y = state2D->values[1];
+            const ompl::PPM ppm = si_->getSpacePPM();
 
-        // Distance formula between two points, offset by the circle's
-        // radius
-        return sqrt((x-0.5)*(x-0.5) + (y-0.5)*(y-0.5)) - 0.25;
+            const ompl::PPM::Color &c = ppm.getPixel(y, x);
+            if (c.red > 150 && c.green > 150 && c.blue > 150) 
+                return 10;    
+            else
+                return 0;
+        }
+        catch(const std::exception& e)
+        {
+            OMPL_ERROR(e.what());
+            OMPL_ERROR("is catched in clearance");
+
+        }
+        return 0;
     }
 };
-
-// // MUST take the color from SpaceInformation
-// class StabilityChecker : public ob::StateStabilityChecker
-// {
-// public:
-//     StabilityChecker(const ob::SpaceInformationPtr& si_) :
-//         ob::StateStabilityChecker(si_) {
-//         }
-    
-//     bool isStable(const ob::State* state) const override
-//     {
-//         return true;
-//     }
-// };
-
-/** Create an optimization objective which attempts to optimize both
-    path length and clearance. We do this by defining our individual
-    objectives, then adding them to a MultiOptimizationObjective
-    object. This results in an optimization objective where path cost
-    is equivalent to adding up each of the individual objectives' path
-    costs.
-
-    When adding objectives, we can also optionally specify each
-    objective's weighting factor to signify how important it is in
-    optimal planning. If no weight is specified, the weight defaults to
-    1.0.
-*/
 
 /**
  * @brief optimal objective
@@ -104,22 +98,46 @@ public:
     ClearanceObjective(const ob::SpaceInformationPtr& si_) :
         ob::StateCostIntegralObjective(si_, true)
     {
-        //test.warn("warn");
     }
 
-    // Our requirement is to maximize path clearance from obstacles,
-    // but we want to represent the objective as a path cost
-    // minimization. Therefore, we set each state's cost to be the
-    // reciprocal of its clearance, so that as state clearance
-    // increases, the state cost decreases.
+    // Our requirement is to maximize path clearance from obstacles
     ob::Cost stateCost(const ob::State* s) const override
     {
-        //test.warn("warn");
-        return ob::Cost(1 / (si_->getStateValidityChecker()->clearance(s) +
-            std::numeric_limits<double>::min()));
+        return ob::Cost(si_->getStateValidityChecker()->clearance(s));
     }
 };
 
+class StabilityObjective : public ob::StateCostIntegralObjective
+{
+public:
+    StabilityObjective(const ob::SpaceInformationPtr& si_) :
+        ob::StateCostIntegralObjective(si_,true)
+    {    
+    }
+
+     // Our requirement is to maximize path clearance from obstacles
+    ob::Cost stateCost(const ob::State* s) const override
+    {
+        try
+        {
+            const int w = (int)s->as<ob::RealVectorStateSpace::StateType>()->values[0];
+            const int h = (int)s->as<ob::RealVectorStateSpace::StateType>()->values[1];
+
+            const ompl::PPM ppm = si_->getSpacePPM();
+
+            const ompl::PPM::Color &c = ppm.getPixel(h,w);
+            
+            if (c.red > 254 && c.green > 254 && c.blue > 168)
+                return ob::Cost(0);
+            return ob::Cost(1000);
+        }
+        catch(const std::exception& e)
+        {
+            OMPL_ERROR("In StabilityObjective.\n%s", e.what());
+        }
+        return ob::Cost(0);
+    }
+};
 class tBITEnvironment
 {
 public:
@@ -146,6 +164,8 @@ public:
             // Construct a space information instance for this state space
             si_ = std::make_shared<ob::SpaceInformation>(space);
 
+            si_->setSpacePPM(ppm_);
+
             // set state validity checking for this space
             si_->setStateValidityChecker(std::make_shared<ValidityChecker>(si_));
             si_->setup();
@@ -154,13 +174,15 @@ public:
             pdef_ = std::make_shared<ob::ProblemDefinition>(si_);
 
             // set Optimization Objective 
-            // st 
             auto lengthObj(std::make_shared<ob::PathLengthOptimizationObjective>(si_));
             auto clearObj(std::make_shared<ClearanceObjective>(si_));
+            auto stableObj(std::make_shared<StabilityObjective>(si_));
             auto opt(std::make_shared<ob::MultiOptimizationObjective>(si_));
-            opt->addObjective(lengthObj, 10.0);
             opt->addObjective(clearObj, 1.0);
-            pdef_->setOptimizationObjective(getBalancedObjective(si_));
+            opt->addObjective(stableObj, 1.0);
+            opt->addObjective(lengthObj, 10.0);
+            opt->setCostToGoHeuristic(&ob::goalRegionCostToGo);
+            pdef_->setOptimizationObjective(ob::OptimizationObjectivePtr(opt));
 
             //set planner
             optimizingPlanner_ = std::make_shared<og::BITstar>(si_);
@@ -173,24 +195,21 @@ public:
     bool plan(unsigned int start_row, unsigned int start_col, unsigned int goal_row, unsigned int goal_col)
     {
         ob::StateSpacePtr space = si_->getStateSpace();
-        // Set our robot's starting state to be the bottom-left corner of
-        // the environment, or (0,0).
-        // MUST input and output from command argv
+        // Set our robot's starting state 
         ob::ScopedState<> start(space);
         start->as<ob::RealVectorStateSpace::StateType>()->values[0] = start_row; //0.0
         start->as<ob::RealVectorStateSpace::StateType>()->values[1] = start_col; //0.0
 
-        // Set our robot's goal state to be the top-right corner of the
-        // environment, or (1,1).
+        // Set our robot's goal state 
         ob::ScopedState<> goal(space);
         goal->as<ob::RealVectorStateSpace::StateType>()->values[0] = goal_row;//1.0;
         goal->as<ob::RealVectorStateSpace::StateType>()->values[1] = goal_col;//1.0;
 
         // Set the start and goal states
-        pdef_->setStartAndGoalStates(start, goal);
+        pdef_->setStartAndGoalStates(start, goal,10);
 
         // attempt to solve the planning problem in the given runtime
-        ob::PlannerStatus solved = optimizingPlanner_->solve(10);
+        ob::PlannerStatus solved = optimizingPlanner_->solve(10000);
 
         if (solved)
         {
@@ -201,15 +220,6 @@ public:
                 << pdef_->getSolutionPath()->length()
                 << std::endl;
 
-            // If a filename was specified, output the path as a matrix to
-            // that file for visualization
-            // if (!outputFile.empty())
-            // {
-            //     std::ofstream outFile(outputFile.c_str());
-            //     std::static_pointer_cast<og::PathGeometric>(pdef_->getSolutionPath())->
-            //         printAsMatrix(outFile);
-            //     outFile.close();
-            // }
             return true;
         }
         else
@@ -223,6 +233,7 @@ public:
     {
         if (!pdef_ || !pdef_->hasSolution())
             return;
+        std::ofstream outFile(outputFile_.c_str());
         const ob::PathPtr &pp = pdef_->getSolutionPath();
         //if (pp)
         og::PathGeometric &p = static_cast<og::PathGeometric &>(*pp);
@@ -232,30 +243,25 @@ public:
             const int w = std::min(maxWidth_, (int)p.getState(i)->as<ob::RealVectorStateSpace::StateType>()->values[0]);
             const int h =
                 std::min(maxHeight_, (int)p.getState(i)->as<ob::RealVectorStateSpace::StateType>()->values[1]);
+            // Record Solution Path as Metrix
+            outFile << w << " " << h << std::endl;
+            // Record Solution Path as Pixel
             ompl::PPM::Color &c = ppm_.getPixel(h, w);
             c.red = 255;
             c.green = 0;
             c.blue = 0;
         }
+        outFile <<std::endl;
+        outFile.close();
     }
-
+    
     void save(const char *filename)
     {
         if (!pdef_)
-            return
+        {
+            return;
+        }
         ppm_.saveFile(filename);
-    }
-
-    ob::OptimizationObjectivePtr getBalancedObjective(const ob::SpaceInformationPtr& si_)
-    {
-        //test.warn("warn");
-        auto lengthObj(std::make_shared<ob::PathLengthOptimizationObjective>(si_));
-        auto clearObj(std::make_shared<ClearanceObjective>(si_));
-        auto opt(std::make_shared<ob::MultiOptimizationObjective>(si_));
-        opt->addObjective(lengthObj, 10.0);
-        opt->addObjective(clearObj, 1.0);
-
-        return ob::OptimizationObjectivePtr(opt);
     }
 
 private:
@@ -265,32 +271,29 @@ private:
     int maxWidth_;
     int maxHeight_;
     ompl::PPM ppm_;
+    std::string outputFile_;
 };
 // Parse the command-line arguments
 /** Parse the command line arguments into a string for an output file and the planner/optimization types */
-// MUST add start and goal
-    // START is current state
-    // GOAL is arg INPUT
 
-
-int main(int argc, char** argv)
+int main(/*int argc, char** argv*/)
 {
-    // The parsed arguments
-    std::string outputFile = argv[1];
-    unsigned int start_row = std::stoul(argv[2],nullptr,16);
-    unsigned int start_col = std::stoul(argv[3],nullptr,16);
-    unsigned int goal_row = std::stoul(argv[4],nullptr,16);
-    unsigned int goal_col = std::stoul(argv[5],nullptr,16);
+    unsigned int start_row = 1295;//std::stoul(argv[2],nullptr,16);
+    unsigned int start_col = 550;//std::stoul(argv[3],nullptr,16);
+    unsigned int goal_row = 325;//std::stoul(argv[4],nullptr,16);
+    unsigned int goal_col = 975;//std::stoul(argv[5],nullptr,16);
 
     ompl::msg::setLogLevel(ompl::msg::LOG_DEBUG);
 
     boost::filesystem::path path(TEST_RESOURCES_DIR);
-    tBITEnvironment env((path / "ppm/floor.ppm").string().c_str());
+    tBITEnvironment env((path / "test.ppm").string().c_str());
         // MUST add start and goal
+        //(1741,803,826,270)
     if (env.plan(start_row, start_col, goal_row, goal_col))
     {
         env.recordSolution();
-        env.save((outputFile+".ppm").c_str());
+        OMPL_INFORM((path /  "result_pmu_route++2.ppm").string().c_str());
+        env.save((path /  "result_pmu_route++2.ppm").string().c_str());
         // Return with success
         return 0;
     }

@@ -48,17 +48,11 @@
                              + OMPL_MINOR_VERSION * 1000        \
                              + OMPL_PATCH_VERSION)
 
-/** \brief Specify whether the MORSE extension is built */
-#define OMPL_EXTENSION_MORSE
-
 /** \brief Specify whether the ODE extension is built */
 #define OMPL_EXTENSION_ODE
 
 /** \brief Whether FLANN is installed */
 #define OMPL_HAVE_FLANN
-
-/** \brief Whether SPOT is installed */
-#define OMPL_HAVE_SPOT
 
 /** \brief Whether Numpy and Boost.Numpy are installed */
 #define OMPL_HAVE_NUMPY
