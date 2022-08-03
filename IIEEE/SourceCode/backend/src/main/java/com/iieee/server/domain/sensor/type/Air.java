@@ -12,10 +12,12 @@ import javax.persistence.Embeddable;
 public class Air {
     private Double temperature;
     private Double humidity;
+    private Double pressure;
 
     @Builder
-    public Air(Double temperature, Double humidity) {
+    public Air(Double temperature, Double humidity, Double pressure) {
         this.temperature = temperature;
         this.humidity = humidity;
+        this.pressure = pressure;
     }
 }

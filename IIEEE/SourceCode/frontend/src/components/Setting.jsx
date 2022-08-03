@@ -1,76 +1,86 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import cancel from '../assets/cancel.png';
 import Slider from './Slider';
+import cancel from '../assets/cancel.png';
+import { rangeMinMax } from '../assets/data/rangeMinMax';
 
-function Setting({ open, getState, dataType, range, setRange, rangeVal }) {
-  const onClick = () => {
-    getState(!open);
+const Setting = ({ open, isOpen, title, range, setRange, rangeVal }) => {
+  const onCancelClick = () => {
+    isOpen(!open);
+    if (
+      rangeVal[0] === rangeMinMax[title].min &&
+      rangeVal[1] === rangeMinMax[title].min
+    ) {
+      setRange({
+        lower: rangeMinMax[title].min,
+        upper: rangeMinMax[title].min,
+      });
+    } else {
+      setRange({ lower: rangeVal[0], upper: rangeVal[1] });
+    }
   };
+
   const onOkClick = () => {
-    getState(!open);
-    const rangeList = [range.lower, range.upper];
-    const rangeListStr = JSON.stringify(rangeList);
-    window.localStorage.setItem(dataType.name, rangeListStr);
+    isOpen(!open);
+    const rangeList = JSON.stringify([range.lower, range.upper]);
+    window.localStorage.setItem(title, rangeList);
   };
 
   return (
-    <>
-      {open && (
-        <Container>
-          <ModalContainer>
-            <Header>
-              <Title>Setting</Title>
-              <XButton type='button' onClick={onClick}>
-                <XButtonImage src={cancel} alt='cancel button'></XButtonImage>
-              </XButton>
-            </Header>
-            <Content>Range</Content>
-            <SliderContainer>
-              <Slider range={range} setRange={setRange} rangeVal={rangeVal} />
-            </SliderContainer>
-            <ButtonContainer>
-              <CancelButton onClick={onClick}>CANCEL</CancelButton>
-              <OkButton onClick={onOkClick}>OK</OkButton>
-            </ButtonContainer>
-          </ModalContainer>
-        </Container>
-      )}
-    </>
+    <Container>
+      <ModalContainer>
+        <Header>
+          <Title>Setting</Title>
+          <XButton type='button' onClick={onCancelClick}>
+            <XButtonImage src={cancel} alt='cancel button' />
+          </XButton>
+        </Header>
+        <SliderContainer>
+          <Slider
+            range={range}
+            setRange={setRange}
+            rangeVal={rangeVal}
+            title={title}
+          />
+        </SliderContainer>
+        <ButtonContainer>
+          <CancelButton onClick={onCancelClick}>CANCEL</CancelButton>
+          <OkButton onClick={onOkClick}>OK</OkButton>
+        </ButtonContainer>
+      </ModalContainer>
+    </Container>
   );
-}
+};
 
 export default Setting;
 
 const Container = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background-color: rgba(0, 0, 0, 0.6);
   z-index: 99;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+  width: 100%;
 `;
 
 const ModalContainer = styled.div`
-  width: 28%;
+  width: 85%;
   height: fit-content;
   background: #ffffff;
   border-radius: 10px;
   box-shadow: 1px 3px 6px rgba(142, 142, 142, 0.16);
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 50;
   @media screen and (max-width: 767px) and (orientation: portrait) {
-    width: 55%;
+    width: 70%;
     border-radius: 8px;
   }
 `;
 
 const Header = styled.div`
   width: 100%;
-  padding: 5% 0;
+  padding: 4.5% 0;
   background-color: #65b065;
   color: white;
   border-radius: 10px 10px 0 0;
@@ -84,7 +94,7 @@ const Header = styled.div`
 
 const Title = styled.div`
   font-family: 'poppinsSB';
-  font-size: 17px;
+  font-size: 14px;
   margin-left: 5%;
   @media screen and (max-width: 767px) and (orientation: portrait) {
     font-size: 13px;
@@ -97,39 +107,26 @@ const XButton = styled.button`
   border: none;
   padding: 0;
   width: 7%;
-  height: 1.8vh;
+  height: 1.5vh;
   margin-right: 5%;
   display: flex;
   justify-content: center;
   align-items: center;
   @media screen and (max-width: 767px) and (orientation: portrait) {
-    height: 1.3vh;
+    height: 1.2vh;
   }
 `;
 
 const XButtonImage = styled.img`
-  height: 1.8vh;
+  height: 1.5vh;
   @media screen and (max-width: 767px) and (orientation: portrait) {
-    height: 1.3vh;
-  }
-`;
-
-const Content = styled.div`
-  font-family: 'poppinsM';
-  font-size: 13px;
-  color: #717171;
-  padding: 3vh;
-  margin-bottom: 5%;
-  @media screen and (max-width: 767px) and (orientation: portrait) {
-    font-size: 10px;
-    padding: 2.5vh;
-    margin-bottom: 10%;
+    height: 1.2vh;
   }
 `;
 
 const SliderContainer = styled.div`
   margin: 0 10%;
-  padding: 4% 0;
+  padding: 22% 0 4% 0;
   @media screen and (max-width: 767px) and (orientation: portrait) {
     margin: 0.5vh 10%;
   }
@@ -148,7 +145,7 @@ const CancelButton = styled.button`
   outline: none;
   border: none;
   font-family: 'poppinsM';
-  font-size: 14px;
+  font-size: 12px;
   margin: 0 2vh;
   color: #b4b4b4;
   @media screen and (max-width: 767px) and (orientation: portrait) {
@@ -162,7 +159,7 @@ const OkButton = styled.button`
   outline: none;
   border: none;
   font-family: 'poppinsSB';
-  font-size: 14px;
+  font-size: 12px;
   color: #65b065;
   @media screen and (max-width: 767px) and (orientation: portrait) {
     font-size: 12px;

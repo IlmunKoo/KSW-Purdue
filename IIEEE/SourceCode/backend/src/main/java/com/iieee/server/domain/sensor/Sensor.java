@@ -26,16 +26,13 @@ public class Sensor {
 
     private Double windSpeed;
 
-    private Double uv;
-
     @Column(nullable = false)
     private LocalDateTime dateTime;
 
     @Builder
-    public Sensor(Air air, Double windSpeed, Double uv, LocalDateTime dateTime) {
+    public Sensor(Air air, Double windSpeed, LocalDateTime dateTime) {
         this.air = air;
         this.windSpeed = windSpeed;
-        this.uv = uv;
         this.dateTime = dateTime;
     }
 

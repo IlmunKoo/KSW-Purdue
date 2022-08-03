@@ -17,20 +17,19 @@ public class SensorSaveRequestDto {
     // Air
     private Double airTemperature;
     private Double airHumidity;
+    private Double airPressure;
 
     private Double windSpeed;
-
-    private Double uv;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dateTime;
 
     @Builder
-    public SensorSaveRequestDto(Double airTemperature, Double airHumidity, Double windSpeed, Double uv, LocalDateTime dateTime) {
+    public SensorSaveRequestDto(Double airTemperature, Double airHumidity, Double airPressure, Double windSpeed, LocalDateTime dateTime) {
         this.airTemperature = airTemperature;
         this.airHumidity = airHumidity;
+        this.airPressure =airPressure;
         this.windSpeed = windSpeed;
-        this.uv = uv;
         this.dateTime = dateTime;
     }
 
@@ -40,7 +39,6 @@ public class SensorSaveRequestDto {
         return Sensor.builder()
                 .air(air)
                 .windSpeed(windSpeed)
-                .uv(uv)
                 .dateTime(dateTime)
                 .build();
     }
@@ -49,6 +47,7 @@ public class SensorSaveRequestDto {
         return Air.builder()
                 .temperature(airTemperature)
                 .humidity(airHumidity)
+                .pressure(airPressure)
                 .build();
     }
 }

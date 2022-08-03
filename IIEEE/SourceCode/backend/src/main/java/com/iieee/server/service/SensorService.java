@@ -1,6 +1,5 @@
 package com.iieee.server.service;
 
-import com.iieee.server.app.dto.sensor.SensorListRequestDto;
 import com.iieee.server.app.dto.sensor.SensorListResponseDto;
 import com.iieee.server.app.dto.sensor.SensorResponseDto;
 import com.iieee.server.app.dto.sensor.SensorSaveRequestDto;
@@ -12,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -39,9 +39,9 @@ public class SensorService {
     }
 
     @Transactional(readOnly = true)
-    public List<SensorListResponseDto> findSensorListByDateTimeAndStation(Long station_id, SensorListRequestDto requestDto) {
+    public List<SensorListResponseDto> findSensorListByDateTimeAndStation(Long station_id, LocalDateTime startDateTime, LocalDateTime endDateTime) {
         Station linkedStation = stationRepository.findById(station_id).orElseThrow(() -> new IllegalArgumentException("There is no station. id=" + station_id));
-        List<Sensor> entities = sensorRepository.findByDateTimeBetweenAndStation(requestDto.getStartDateTime(), requestDto.getEndDateTime(), linkedStation);
+        List<Sensor> entities = sensorRepository.findByDateTimeBetweenAndStation(startDateTime, endDateTime, linkedStation);
 
         if (entities.size() <= MAX_NUM_OF_INTERVAL) {
             return entities.stream()
@@ -71,6 +71,35 @@ public class SensorService {
         Sensor savedSensor = requestDto.toEntity();
 
         savedSensor.setStation(linkedStation);
+
+        return sensorRepository.save(savedSensor).getId();
+    }
+
+    @Transactional
+    public Long saveBySenet(Long senet_city_id, SensorSaveRequestDto requestDto) {
+        Optional<Station> linkedStation = stationRepository.findBySenetCityId(senet_city_id);
+        if (linkedStation.isEmpty()) {
+            throw new IllegalArgumentException("There is no station. senet_city_id=" + senet_city_id);
+        }
+
+        Sensor savedSensor = requestDto.toEntity();
+
+        savedSensor.setStation(linkedStation.get());
+
+        return sensorRepository.save(savedSensor).getId();
+    }
+
+    @Deprecated
+    @Transactional
+    public Long save(String eui, SensorSaveRequestDto requestDto) {
+        Optional<Station> linkedStation = stationRepository.findByEui(eui);
+        if (linkedStation.isEmpty()) {
+            throw new IllegalArgumentException("There is no station. eui=" + eui);
+        }
+
+        Sensor savedSensor = requestDto.toEntity();
+
+        savedSensor.setStation(linkedStation.get());
 
         return sensorRepository.save(savedSensor).getId();
     }

@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
+@Deprecated
 @NoArgsConstructor
 @Getter
 @Setter

@@ -3,27 +3,29 @@ import styled from 'styled-components';
 import ReactApexChart from 'react-apexcharts';
 import Setting from './Setting';
 import setting from '../assets/settings.png';
+import { rangeMinMax } from '../assets/data/rangeMinMax';
 
-function Graph({ toggle, dataType, title }) {
-  const rangeData = window.localStorage.getItem(dataType.name);
-  let rangeVal;
-
-  if (rangeData) {
-    rangeVal = JSON.parse(rangeData);
-  } else {
-    rangeVal = [50, 50];
-  }
-
+const Graph = ({ toggle, title, data }) => {
+  const rangeData = window.localStorage.getItem(title);
+  const rangeVal = JSON.parse(rangeData) || [
+    rangeMinMax[title].min,
+    rangeMinMax[title].min,
+  ];
   const [range, setRange] = useState({
     lower: rangeVal[0],
     upper: rangeVal[1],
   });
 
-  const test = {
+  const [open, setOpen] = useState(false);
+  const isOpen = (open) => {
+    setOpen(open);
+  };
+
+  const property = {
     series: [
       {
-        name: 'Desktops',
-        data: dataType.y,
+        name: title,
+        data: data,
       },
     ],
     options: {
@@ -90,76 +92,64 @@ function Graph({ toggle, dataType, title }) {
           breakpoint: 767,
           options: {
             chart: {
-              height: '140',
+              height: '160',
               parentHeightOffset: 0,
             },
           },
         },
       ],
       xaxis: {
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+        type: 'datetime',
       },
     },
     yaxis: {
-      labels: {
-        minWidth: 8,
-        maxWidth: 15,
-      },
       formatter: function (data) {
         return (data / 100000000).toFixed(0);
       },
     },
   };
 
-  const [open, setOpen] = useState(false);
-  const getState = (open) => {
-    setOpen(open);
-    console.log(rangeVal[0], rangeVal[1]);
-  };
-
   return (
-    <>
+    <Container>
+      <TitleContainer>
+        <DataTitle>{title}</DataTitle>
+        <SettingButton type='button' onClick={() => setOpen(true)}>
+          <SettingButtonImage src={setting} alt='setting button' />
+        </SettingButton>
+      </TitleContainer>
       {open && (
         <Setting
           open={open}
-          getState={getState}
-          dataType={dataType}
+          isOpen={isOpen}
           range={range}
           setRange={setRange}
+          title={title}
           rangeVal={rangeVal}
         />
       )}
-      <Container>
-        <TitleContainer>
-          <DataTitle>{title}</DataTitle>
-          <SettingButton type='button' onClick={() => setOpen(true)}>
-            <SettingButtonImage src={setting} alt='setting button' />
-          </SettingButton>
-        </TitleContainer>
-        <GraphContainer>
-          <ReactApexChart
-            options={test.options}
-            series={test.series}
-            type='line'
-            height={toggle ? 150 : 320}
-            width={toggle ? '100%' : 430}
-          />
-        </GraphContainer>
-      </Container>
-    </>
+      <GraphContainer>
+        <ReactApexChart
+          options={property.options}
+          series={property.series}
+          type='line'
+          height={toggle ? 150 : 320}
+          width={toggle ? '100%' : 410}
+        />
+      </GraphContainer>
+    </Container>
   );
-}
+};
 
 export default Graph;
 
 const Container = styled.div`
   width: 93%;
   height: fit-content;
-  padding: 0.5vh 2.5vh 2.1vh 2.5vh;
+  margin: 0 auto;
+  padding: 1vh 2vh;
   overflow: hidden;
   @media screen and (max-width: 767px) and (orientation: portrait) {
-    width: 93%;
-    margin: 2vh 0;
+    padding: 1vh;
   }
 `;
 
@@ -179,7 +169,7 @@ const DataTitle = styled.div`
   color: #5f5f5f;
   margin-left: 1vh;
   @media screen and (max-width: 767px) and (orientation: portrait) {
-    font-size: 11px;
+    font-size: 13px;
     margin-left: 0.5vh;
   }
 `;
@@ -196,15 +186,15 @@ const SettingButton = styled.button`
   justify-content: center;
   align-items: center;
   @media screen and (max-width: 767px) and (orientation: portrait) {
-    height: 1.6vh;
-    margin-right: 0.4vh;
+    height: 1.8vh;
+    margin-right: 0.5vh;
   }
 `;
 
 const SettingButtonImage = styled.img`
   height: 2.5vh;
   @media screen and (max-width: 767px) and (orientation: portrait) {
-    height: 1.6vh;
+    height: 1.8vh;
   }
 `;
 
@@ -216,5 +206,5 @@ const GraphContainer = styled.div`
   background: #ffffff;
   padding-top: 1vh;
   border-radius: 15px;
-  box-shadow: 1px 3px 6px rgba(142, 142, 142, 0.16);
+  box-shadow: 1px 3px 6px #8e8e8e29;
 `;
