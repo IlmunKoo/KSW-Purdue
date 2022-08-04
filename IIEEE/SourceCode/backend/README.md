@@ -8,6 +8,7 @@
 - [Technologies](#technologies)
 - [Setting](#setting)
 - [Installation & Run](#installation--run)
+- [Dockerize](#dockerize)
 
 <!--te-->
 
@@ -54,4 +55,23 @@ spring:
 To run the application, run the following command in a terminal window
 ```
 ./gradlew bootRun
+```
+
+# Dockerize
+If you wnat to dockerize project, you should add environmental files.
+Enfironmental values cannot be uploaded on github because of security.
+Please follow [Setting](#setting).
+The origin of this project is already dockerized.
+You can access the image of this project at `iamhge/iieee-ksw-server:latest` in docker hub.
+
+You can see dockerizing guide at docker docs, too.
+
+Build with gradle this project.
+```shell
+./gradlew build
+```
+
+Build an image from a Dockerfile.
+```shell
+docker build [OPTIONS] PATH | URL | -
 ```
