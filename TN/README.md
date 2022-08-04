@@ -12,7 +12,7 @@
 
 ## Paper and presentation matrial
 All details of this project are explained on matrials listed below.
-- [MID-Paper](./PresentationAndPaper/mid_paper_060122.pdf)
+- [Paper](./PresentationAndPaper/UAV_velocity_prediction_IEEE_080322.pdf)
 - [Presentation](./PresentationAndPaper/Final_presentation080222.pdf)
 
 ## Problem Statement
