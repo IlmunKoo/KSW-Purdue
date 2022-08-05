@@ -42,6 +42,7 @@
        the evacuation route based on real-time data.
        Our team concentrates on real-time route modification to make sure that victims can stay away from hazards
        Our project also detects the location of the fire, so people may know the location of the fire and stay away.
+       Also, people in same area will be guided in different route to avoid congestion.
       
     3. Augmented Reality
        => Since we developed an optimized route algorithm to calculate the best route, if we cannot advise victims 
@@ -50,7 +51,7 @@
        dependent on angles, that users cannot notice if they are on the right route.
        Image-based navigation has its limits on malfunctioning in a real situation full of smoke.
        We developed Augmented Reality for those who cannot notice exit sign. It is clear to see, and it works when 
-       they do not have clear sight.
+       they do not have clear sight. Also, we provide 2D map to notice their current location and heading direction
 
 🏛 *System Overview*
  <p align="center">
