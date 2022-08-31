@@ -6,8 +6,8 @@ import numpy as np
 import random
 
 Feature = "MFCC"
-DATASET_PATH = "/content/drive/MyDrive/AudioData&Label/Data Combined"
-JSON_PATH = "/content/drive/MyDrive/Colab Notebooks/DL/Data/FinalData/4class-"+Feature+".json" # 저장 원하는 경로 
+DATASET_PATH = "/content/drive/MyDrive/AudioData&Label/Data Combined" # Raw Audio Data Path
+JSON_PATH = "/content/drive/MyDrive/Colab Notebooks/DL/Data/FinalData/4class-"+Feature+".json" # Path where you want to save data
 
 SAMPLE_RATE = 22050 # 44100 / 2
 DURATION = 10
