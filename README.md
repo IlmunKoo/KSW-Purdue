@@ -1,8 +1,9 @@
+:dizzy: IEEE-International Conference on Robotic Computing Regular Paper(8 pages)
+
+
 2022 Purdue UAV Payload Detection   
 by What is Today's Lunch?
 
-
-:dizzy: IEEE-International Conference on Robotic Computing Regular Paper(8 pages)
 =================================================================
 
 
